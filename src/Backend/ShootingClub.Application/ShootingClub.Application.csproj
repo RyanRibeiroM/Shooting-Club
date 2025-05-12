@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\ShootingClub.Communication\ShootingClub.Communication.csproj" />
+    <ProjectReference Include="..\..\Shared\ShootingClub.Exceptions\ShootingClub.Exceptions.csproj" />
+    <ProjectReference Include="..\ShootingClub.Domain\ShootingClub.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
