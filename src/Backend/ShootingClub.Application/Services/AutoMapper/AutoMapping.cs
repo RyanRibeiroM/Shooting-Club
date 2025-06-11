@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ShootingClub.Communication.Requests;
+using ShootingClub.Communication.Responses;
 
 namespace ShootingClub.Application.Services.AutoMapper
 {
@@ -8,6 +9,7 @@ namespace ShootingClub.Application.Services.AutoMapper
         public AutoMapping()
         {
             RequestToDomain();
+            DomainToResponse();
         }
 
         private void RequestToDomain()
@@ -15,6 +17,11 @@ namespace ShootingClub.Application.Services.AutoMapper
             CreateMap<RequestRegisterUsuarioJson, Domain.Entities.Usuario>()
                 .ForMember(dest => dest.Senha, opt => opt.Ignore())
                 .ForMember(dest => dest.CPF, opt => opt.Ignore());
+        }
+
+        private void DomainToResponse()
+        {
+            CreateMap<Domain.Entities.Usuario, ResponseUsuarioProfileJson>();
         }
     }
 }

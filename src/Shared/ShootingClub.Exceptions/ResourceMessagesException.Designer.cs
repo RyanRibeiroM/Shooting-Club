@@ -115,6 +115,15 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Email e/ou senha inválidos..
+        /// </summary>
+        public static string EMAIL_OU_SENHA_INVALIDO {
+            get {
+                return ResourceManager.GetString("EMAIL_OU_SENHA_INVALIDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O bairro informado é inválido..
         /// </summary>
         public static string ENDERECO_BAIRRO_INVALIDO {
@@ -205,11 +214,29 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a A senha está inválida..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O token não foi enviado..
+        /// </summary>
+        public static string SEM_TOKEN {
+            get {
+                return ResourceManager.GetString("SEM_TOKEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A senha está inválida, a senha deve conter 8 caracteres entre eles letra minúscula, uma maiúscula, um dígito e um símbolo especial.
         /// </summary>
         public static string SENHA_INVALIDA {
             get {
                 return ResourceManager.GetString("SENHA_INVALIDA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O usuário não tem permissão para acessar esse recurso..
+        /// </summary>
+        public static string USUARIO_SEM_PERMISSAO_PARA_ACESSAR_RECURSO {
+            get {
+                return ResourceManager.GetString("USUARIO_SEM_PERMISSAO_PARA_ACESSAR_RECURSO", resourceCulture);
             }
         }
     }

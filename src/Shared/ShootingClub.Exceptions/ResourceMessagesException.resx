@@ -135,6 +135,9 @@
   <data name="EMAIL_JA_CADASTRADO" xml:space="preserve">
     <value>Email já registrado.</value>
   </data>
+  <data name="EMAIL_OU_SENHA_INVALIDO" xml:space="preserve">
+    <value>Email e/ou senha inválidos.</value>
+  </data>
   <data name="ENDERECO_BAIRRO_INVALIDO" xml:space="preserve">
     <value>O bairro informado é inválido.</value>
   </data>
@@ -165,7 +168,13 @@
   <data name="NUMERO_FILIACAO_JA_CADASTRADO" xml:space="preserve">
     <value>O número de Filiação já foi cadastrado.</value>
   </data>
+  <data name="SEM_TOKEN" xml:space="preserve">
+    <value>O token não foi enviado.</value>
+  </data>
   <data name="SENHA_INVALIDA" xml:space="preserve">
-    <value>A senha está inválida.</value>
+    <value>A senha está inválida, a senha deve conter 8 caracteres entre eles letra minúscula, uma maiúscula, um dígito e um símbolo especial</value>
+  </data>
+  <data name="USUARIO_SEM_PERMISSAO_PARA_ACESSAR_RECURSO" xml:space="preserve">
+    <value>O usuário não tem permissão para acessar esse recurso.</value>
   </data>
 </root>

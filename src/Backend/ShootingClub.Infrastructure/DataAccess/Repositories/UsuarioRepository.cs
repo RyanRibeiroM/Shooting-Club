@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShootingClub.Domain.Entities;
+using ShootingClub.Domain.Enums;
 using ShootingClub.Domain.Repositories.Usuario;
 
 namespace ShootingClub.Infrastructure.DataAccess.Repositories
@@ -28,7 +29,17 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
             return await _dbContext.Usuarios.AnyAsync(usuario => usuario.NumeroFiliacao.Equals(numeroFiliacao) && usuario.Ativo);
         }
 
+        public async Task<Usuario?> GetByEmailAndSenha(string email, string senha)
+        {
+            return await _dbContext
+                .Usuarios
+                .AsNoTracking()
+                .FirstOrDefaultAsync(usuario =>usuario.Ativo && usuario.Email.Equals(email) && usuario.Senha.Equals(senha));
+        }
 
+        public async Task<bool> ExistActiveUserWithIdentificador(Guid IdentificadorUsuario) => await _dbContext.Usuarios.AnyAsync(usuario => usuario.IdentificadorUsuario.Equals(IdentificadorUsuario) && usuario.Ativo);
+
+        public async Task<bool> ExistActiveAdminWithIdentificador(Guid IdentificadorUsuario) => await _dbContext.Usuarios.AnyAsync(usuario => usuario.IdentificadorUsuario.Equals(IdentificadorUsuario) && usuario.Ativo && usuario.Nivel == NivelUsuario.AdminUsuario);
 
     }
 }

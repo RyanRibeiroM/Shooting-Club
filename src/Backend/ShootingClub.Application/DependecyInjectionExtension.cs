@@ -1,8 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShootingClub.Application.Services.AutoMapper;
 using ShootingClub.Application.Services.Cryptography;
+using ShootingClub.Application.UseCases.Login.DoLogin;
+using ShootingClub.Application.UseCases.Usuario.Profile;
 using ShootingClub.Application.UseCases.Usuario.Register;
 
 namespace ShootingClub.Application
@@ -27,6 +28,9 @@ namespace ShootingClub.Application
         private static void AddUseCases(IServiceCollection services)
         {
             services.AddScoped<IRegisterUsuarioUseCase, RegisterUsuarioUseCase>();
+            services.AddScoped<IDoLoginUseCase, DoLoginUseCase>();
+            services.AddScoped<IGetUsuarioProfileUseCase, GetUsuarioProfileUseCase>();
+
         }
 
         private static void AddPasswordEncript(IServiceCollection services, IConfiguration configuration)

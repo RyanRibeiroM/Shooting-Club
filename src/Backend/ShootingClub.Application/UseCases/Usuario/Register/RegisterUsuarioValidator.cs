@@ -18,9 +18,18 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
                 .EmailAddress()
                 .WithMessage(ResourceMessagesException.EMAIL_INVALIDO);
 
-            RuleFor(Usuario => Usuario.Senha.Length)
-                .GreaterThanOrEqualTo(8)
+            RuleFor(usuario => usuario.Senha)
+                .NotEmpty()
+                .MinimumLength(8)
                 .WithMessage(ResourceMessagesException.SENHA_INVALIDA);
+                
+
+            When(usuario => usuario.Senha.Length >= 8, () =>
+            {
+                RuleFor(usuario => usuario.Senha)
+                .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$")
+                .WithMessage(ResourceMessagesException.SENHA_INVALIDA);
+            });
 
             RuleFor(Usuario => Usuario.CPF)
                 .NotEmpty()

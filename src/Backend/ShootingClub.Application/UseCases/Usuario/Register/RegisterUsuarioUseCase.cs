@@ -6,6 +6,7 @@ using ShootingClub.Communication.Requests;
 using ShootingClub.Communication.Responses;
 using ShootingClub.Domain.Repositories;
 using ShootingClub.Domain.Repositories.Usuario;
+using ShootingClub.Domain.Security.Tokens;
 using ShootingClub.Exceptions;
 using ShootingClub.Exceptions.ExceptionsBase;
 
@@ -18,19 +19,23 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly PasswordEncripter _passwordEncripter;
+        private readonly IAccessTokenGenerator _accessTokenGenerator;
 
         public RegisterUsuarioUseCase(
             IUsuarioReadOnlyRepository usuarioReadOnlyRepository,
             IUsuarioWriteOnlyRepository usuarioWriteOnlyRepository,
             IMapper mapper,
             PasswordEncripter passwordEncripter,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IAccessTokenGenerator accessTokenGenerator
+            )
         {
             _usuarioReadOnlyRepository = usuarioReadOnlyRepository;
             _usuarioWriteOnlyRepository = usuarioWriteOnlyRepository;
             _mapper = mapper;
             _passwordEncripter = passwordEncripter;
             _unitOfWork = unitOfWork;
+            _accessTokenGenerator = accessTokenGenerator;
         }
         public async Task<ResponseRegisteredUsuarioJson> Execute(RequestRegisterUsuarioJson request)
         {
@@ -39,6 +44,7 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
             var usuario = _mapper.Map<Domain.Entities.Usuario>(request);
 
             usuario.Senha = _passwordEncripter.Encrypt(request.Senha);
+            usuario.IdentificadorUsuario = Guid.NewGuid();
 
             usuario.CPF = CpfFormatter.Format(request.CPF);
             usuario.AtualizadoEm = DateTime.Now;
@@ -72,7 +78,7 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
             if (NumeroFiliacaoExist)
                 result.Errors.Add(new FluentValidation.Results.ValidationFailure(string.Empty, ResourceMessagesException.NUMERO_FILIACAO_JA_CADASTRADO));
 
-            if(result.IsValid == false)
+            if(!result.IsValid)
             {
                 var errorMessages = result.Errors.Select(e => e.ErrorMessage).ToList();
 
