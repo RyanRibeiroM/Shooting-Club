@@ -223,11 +223,29 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A senha inserida é diferente da senha atual..
+        /// </summary>
+        public static string SENHA_DIFERENTE_ATUAL {
+            get {
+                return ResourceManager.GetString("SENHA_DIFERENTE_ATUAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a A senha está inválida, a senha deve conter 8 caracteres entre eles letra minúscula, uma maiúscula, um dígito e um símbolo especial.
         /// </summary>
         public static string SENHA_INVALIDA {
             get {
                 return ResourceManager.GetString("SENHA_INVALIDA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A senha está vazia..
+        /// </summary>
+        public static string SENHA_VAZIA {
+            get {
+                return ResourceManager.GetString("SENHA_VAZIA", resourceCulture);
             }
         }
         

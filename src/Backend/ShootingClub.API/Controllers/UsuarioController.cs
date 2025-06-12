@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShootingClub.API.Attributes;
+using ShootingClub.Application.UseCases.Usuario.ChangeSenha;
 using ShootingClub.Application.UseCases.Usuario.Profile;
 using ShootingClub.Application.UseCases.Usuario.Register;
+using ShootingClub.Application.UseCases.Usuario.Update;
 using ShootingClub.Communication.Requests;
 using ShootingClub.Communication.Responses;
 
@@ -30,5 +32,30 @@ namespace ShootingClub.API.Controllers
             var result = await useCase.Execute();
             return Ok(result);
         }
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
+        [AuthenticatedUsuario]
+        public async Task<IActionResult> Update(
+            [FromServices] IUpdateUsuarioUseCase useCase,
+            [FromBody] RequestUpdateUsuarioJson request)
+        {
+            await useCase.Execute(request);
+            return NoContent();
+        }
+
+        [HttpPut("change-password")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
+        [AuthenticatedUsuario]
+        public async Task<IActionResult> changeSenha(
+            [FromServices] IChangeSenhaUseCase usecase,
+            [FromBody] RequestChangeSenhaJson request)
+        {
+            await usecase.Execute(request);
+            return NoContent();
+        }
+
     }
 }

@@ -5,7 +5,7 @@ using ShootingClub.Domain.Repositories.Usuario;
 
 namespace ShootingClub.Infrastructure.DataAccess.Repositories
 {
-    public class UsuarioRepository : IUsuarioWriteOnlyRepository, IUsuarioReadOnlyRepository
+    public class UsuarioRepository : IUsuarioWriteOnlyRepository, IUsuarioReadOnlyRepository, IUsuarioUpdateOnlyRepository
     {
         private readonly ShootingClubDbContext _dbContext;
 
@@ -41,5 +41,14 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
 
         public async Task<bool> ExistActiveAdminWithIdentificador(Guid IdentificadorUsuario) => await _dbContext.Usuarios.AnyAsync(usuario => usuario.IdentificadorUsuario.Equals(IdentificadorUsuario) && usuario.Ativo && usuario.Nivel == NivelUsuario.AdminUsuario);
 
+        public async Task<Usuario> GetById(int id)
+        {
+            return await _dbContext
+                .Usuarios
+                .FirstAsync(usuario => usuario.Id == id);
+        }
+
+        public void Update(Usuario usuario) => _dbContext.Usuarios.Update(usuario);
+        
     }
 }

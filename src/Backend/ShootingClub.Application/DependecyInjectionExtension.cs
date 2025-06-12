@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShootingClub.Application.Services.AutoMapper;
-using ShootingClub.Application.Services.Cryptography;
 using ShootingClub.Application.UseCases.Login.DoLogin;
+using ShootingClub.Application.UseCases.Usuario.ChangeSenha;
 using ShootingClub.Application.UseCases.Usuario.Profile;
 using ShootingClub.Application.UseCases.Usuario.Register;
+using ShootingClub.Application.UseCases.Usuario.Update;
 
 namespace ShootingClub.Application
 {
@@ -12,7 +13,6 @@ namespace ShootingClub.Application
     {
         public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            AddPasswordEncript(services, configuration);
             AddAutoMapper(services);
             AddUseCases(services);
         }
@@ -30,13 +30,8 @@ namespace ShootingClub.Application
             services.AddScoped<IRegisterUsuarioUseCase, RegisterUsuarioUseCase>();
             services.AddScoped<IDoLoginUseCase, DoLoginUseCase>();
             services.AddScoped<IGetUsuarioProfileUseCase, GetUsuarioProfileUseCase>();
-
-        }
-
-        private static void AddPasswordEncript(IServiceCollection services, IConfiguration configuration)
-        {
-            var additionalKey = configuration.GetValue<string>("Settings:Password:AdditionalKey");
-            services.AddScoped(Options => new PasswordEncripter(additionalKey!));
+            services.AddScoped<IUpdateUsuarioUseCase, UpdateUsuarioUseCase>();
+            services.AddScoped<IChangeSenhaUseCase, ChangeSenhaUseCase>();
         }
 
     }

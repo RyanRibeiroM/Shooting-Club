@@ -4,11 +4,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShootingClub.Domain.Repositories;
 using ShootingClub.Domain.Repositories.Usuario;
+using ShootingClub.Domain.Security.Cryptography;
 using ShootingClub.Domain.Security.Tokens;
 using ShootingClub.Domain.Services.LoggedUsuario;
 using ShootingClub.Infrastructure.DataAccess;
 using ShootingClub.Infrastructure.DataAccess.Repositories;
 using ShootingClub.Infrastructure.Extensions;
+using ShootingClub.Infrastructure.Security.Cryptography;
 using ShootingClub.Infrastructure.Security.Tokens.Access.Generator;
 using ShootingClub.Infrastructure.Security.Tokens.Access.Validator;
 using ShootingClub.Infrastructure.Services.LoggedUsuario;
@@ -20,6 +22,7 @@ namespace ShootingClub.Infrastructure
     {
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            AddPasswordEncript(services, configuration);
             AddRepositories(services);
             AddLoggedUsuario(services);
             AddTokens(services, configuration);
@@ -41,6 +44,7 @@ namespace ShootingClub.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUsuarioWriteOnlyRepository, UsuarioRepository>();
             services.AddScoped<IUsuarioReadOnlyRepository, UsuarioRepository>();
+            services.AddScoped<IUsuarioUpdateOnlyRepository, UsuarioRepository>();
         }
 
         private static void AddFluentMigrator(IServiceCollection services, IConfiguration configuration)
@@ -65,5 +69,10 @@ namespace ShootingClub.Infrastructure
         }
 
         private static void AddLoggedUsuario(IServiceCollection services) => services.AddScoped<ILoggedUsuario, LoggedUsuario>();
+        private static void AddPasswordEncript(IServiceCollection services, IConfiguration configuration)
+        {
+            var additionalKey = configuration.GetValue<string>("Settings:Password:AdditionalKey");
+            services.AddScoped<ISenhaEncripter>(Options => new Sha512Encripter(additionalKey!));
+        }
     }
 }

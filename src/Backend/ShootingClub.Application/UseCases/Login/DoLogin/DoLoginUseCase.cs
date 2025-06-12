@@ -1,7 +1,7 @@
-﻿using ShootingClub.Application.Services.Cryptography;
-using ShootingClub.Communication.Requests;
+﻿using ShootingClub.Communication.Requests;
 using ShootingClub.Communication.Responses;
 using ShootingClub.Domain.Repositories.Usuario;
+using ShootingClub.Domain.Security.Cryptography;
 using ShootingClub.Domain.Security.Tokens;
 using ShootingClub.Exceptions.ExceptionsBase;
 
@@ -11,9 +11,9 @@ namespace ShootingClub.Application.UseCases.Login.DoLogin
     {
 
         private readonly IUsuarioReadOnlyRepository _repository;
-        private readonly PasswordEncripter _passwordEncripter;
+        private readonly ISenhaEncripter _passwordEncripter;
         private readonly IAccessTokenGenerator _accessTokenGenerator;
-        public DoLoginUseCase(IUsuarioReadOnlyRepository repository, PasswordEncripter passwordEncripter, IAccessTokenGenerator accessTokenGenerator)
+        public DoLoginUseCase(IUsuarioReadOnlyRepository repository, ISenhaEncripter passwordEncripter, IAccessTokenGenerator accessTokenGenerator)
         {
             _repository = repository;
             _passwordEncripter = passwordEncripter;

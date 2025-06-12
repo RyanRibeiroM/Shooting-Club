@@ -1,12 +1,13 @@
-﻿using System.Security.Cryptography;
+﻿using ShootingClub.Domain.Security.Cryptography;
+using System.Security.Cryptography;
 using System.Text;
 
-namespace ShootingClub.Application.Services.Cryptography
+namespace ShootingClub.Infrastructure.Security.Cryptography
 {
-    public class PasswordEncripter
+    internal class Sha512Encripter : ISenhaEncripter
     {
         private readonly string _additionalkey;
-        public PasswordEncripter(string additionalkey) => _additionalkey = additionalkey;
+        public Sha512Encripter(string additionalkey) => _additionalkey = additionalkey;
 
         public string Encrypt(string password)
         {
@@ -20,7 +21,7 @@ namespace ShootingClub.Application.Services.Cryptography
         private static string StringBytes(byte[] bytes)
         {
             var sb = new StringBuilder();
-            foreach(byte b in bytes)
+            foreach (byte b in bytes)
             {
                 var hex = b.ToString("x2");
                 sb.Append(hex);

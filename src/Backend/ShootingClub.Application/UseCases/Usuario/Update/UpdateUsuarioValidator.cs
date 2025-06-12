@@ -1,15 +1,13 @@
 ﻿using FluentValidation;
-using ShootingClub.Application.SharedValidators;
 using ShootingClub.Application.Utils;
 using ShootingClub.Communication.Requests;
 using ShootingClub.Exceptions;
-using System.Data;
 
-namespace ShootingClub.Application.UseCases.Usuario.Register
+namespace ShootingClub.Application.UseCases.Usuario.Update
 {
-    public class RegisterUsuarioValidator : AbstractValidator<RequestRegisterUsuarioJson>
+    public class UpdateUsuarioValidator : AbstractValidator<RequestUpdateUsuarioJson>
     {
-        public RegisterUsuarioValidator()
+        public UpdateUsuarioValidator()
         {
             RuleFor(usuario => usuario.Nome)
                 .NotEmpty()
@@ -20,8 +18,6 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
                 .EmailAddress()
                 .WithMessage(ResourceMessagesException.EMAIL_INVALIDO);
 
-            RuleFor(usuario => usuario.Senha).SetValidator(new SenhaValidator<RequestRegisterUsuarioJson>());
-           
             RuleFor(Usuario => Usuario.CPF)
                 .NotEmpty()
                 .Must(CpfUtils.ValidCPF)
@@ -55,21 +51,6 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
             RuleFor(usuario => usuario.EnderecoNumero)
                 .NotEmpty()
                 .WithMessage(ResourceMessagesException.ENDERECO_NUMERO_INVALIDO);
-
-            RuleFor(usuario => usuario.NumeroFiliacao)
-                .NotEmpty()
-                .WithMessage(ResourceMessagesException.NUMERO_FILIACAO_INVALIDO);
-
-            RuleFor(usuario => usuario.DataFiliacao)
-                .NotEmpty()
-                .LessThanOrEqualTo(_ => DateOnly.FromDateTime(DateTime.Today))
-                .WithMessage(ResourceMessagesException.DATA_RENOVACAO_FILIACAO_INVALIDA);
-
-            RuleFor(usuario => usuario.DataRenovacaoFiliacao)
-                .NotEmpty()
-                .LessThanOrEqualTo(_ => DateOnly.FromDateTime(DateTime.Today))
-                .Must((usuario, dataRenovacao) => dataRenovacao > usuario.DataFiliacao)
-                .WithMessage(ResourceMessagesException.DATA_RENOVACAO_FILIACAO_INVALIDA);
         }
     }
 }

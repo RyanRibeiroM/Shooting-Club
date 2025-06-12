@@ -1,11 +1,11 @@
 ﻿
 using AutoMapper;
-using ShootingClub.Application.Services.Cryptography;
 using ShootingClub.Application.Utils;
 using ShootingClub.Communication.Requests;
 using ShootingClub.Communication.Responses;
 using ShootingClub.Domain.Repositories;
 using ShootingClub.Domain.Repositories.Usuario;
+using ShootingClub.Domain.Security.Cryptography;
 using ShootingClub.Domain.Security.Tokens;
 using ShootingClub.Exceptions;
 using ShootingClub.Exceptions.ExceptionsBase;
@@ -18,14 +18,14 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
         private readonly IUsuarioWriteOnlyRepository _usuarioWriteOnlyRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly PasswordEncripter _passwordEncripter;
+        private readonly ISenhaEncripter _passwordEncripter;
         private readonly IAccessTokenGenerator _accessTokenGenerator;
 
         public RegisterUsuarioUseCase(
             IUsuarioReadOnlyRepository usuarioReadOnlyRepository,
             IUsuarioWriteOnlyRepository usuarioWriteOnlyRepository,
             IMapper mapper,
-            PasswordEncripter passwordEncripter,
+            ISenhaEncripter passwordEncripter,
             IUnitOfWork unitOfWork,
             IAccessTokenGenerator accessTokenGenerator
             )
@@ -46,10 +46,9 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
             usuario.Senha = _passwordEncripter.Encrypt(request.Senha);
             usuario.IdentificadorUsuario = Guid.NewGuid();
 
-            usuario.CPF = CpfFormatter.Format(request.CPF);
-            usuario.AtualizadoEm = DateTime.Now;
+            usuario.CPF = CpfUtils.Format(request.CPF);
+            usuario.AtualizadoEm = DateTime.UtcNow;
 
-            // salvar no banco de dados
             await _usuarioWriteOnlyRepository.Add(usuario);
             await _unitOfWork.Commit();
 
