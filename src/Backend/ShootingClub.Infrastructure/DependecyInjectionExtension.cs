@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShootingClub.Domain.Repositories;
+using ShootingClub.Domain.Repositories.Clube;
 using ShootingClub.Domain.Repositories.Usuario;
 using ShootingClub.Domain.Security.Cryptography;
 using ShootingClub.Domain.Security.Tokens;
@@ -45,6 +46,9 @@ namespace ShootingClub.Infrastructure
             services.AddScoped<IUsuarioWriteOnlyRepository, UsuarioRepository>();
             services.AddScoped<IUsuarioReadOnlyRepository, UsuarioRepository>();
             services.AddScoped<IUsuarioUpdateOnlyRepository, UsuarioRepository>();
+            services.AddScoped<IClubeWriteOnlyRepository, ClubeRepository>();
+            services.AddScoped<IClubeReadOnlyRepository, ClubeRepository>();
+            services.AddScoped<IClubeUpdateOnlyRepository, ClubeRepository>();
         }
 
         private static void AddFluentMigrator(IServiceCollection services, IConfiguration configuration)

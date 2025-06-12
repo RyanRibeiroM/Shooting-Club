@@ -61,6 +61,33 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Você já possui um clube registrado..
+        /// </summary>
+        public static string ADMIN_JA_POSSUI_CLUBE {
+            get {
+                return ResourceManager.GetString("ADMIN_JA_POSSUI_CLUBE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a CNPJ está inválido..
+        /// </summary>
+        public static string CNPJ_INVALIDO {
+            get {
+                return ResourceManager.GetString("CNPJ_INVALIDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a CNPJ já registrado..
+        /// </summary>
+        public static string CNPJ_JA_CADASTRADO {
+            get {
+                return ResourceManager.GetString("CNPJ_JA_CADASTRADO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O CPF  está inválido..
         /// </summary>
         public static string CPF_INVALIDO {
@@ -151,7 +178,7 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a O numerio do endereço é inválido..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O numero do endereço é inválido..
         /// </summary>
         public static string ENDERECO_NUMERO_INVALIDO {
             get {

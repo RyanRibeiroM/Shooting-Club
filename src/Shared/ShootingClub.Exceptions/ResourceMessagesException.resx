@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ADMIN_JA_POSSUI_CLUBE" xml:space="preserve">
+    <value>Você já possui um clube registrado.</value>
+  </data>
+  <data name="CNPJ_INVALIDO" xml:space="preserve">
+    <value>CNPJ está inválido.</value>
+  </data>
+  <data name="CNPJ_JA_CADASTRADO" xml:space="preserve">
+    <value>CNPJ já registrado.</value>
+  </data>
   <data name="CPF_INVALIDO" xml:space="preserve">
     <value>O CPF  está inválido.</value>
   </data>
@@ -148,7 +157,7 @@
     <value>O estado informado é inválido.</value>
   </data>
   <data name="ENDERECO_NUMERO_INVALIDO" xml:space="preserve">
-    <value>O numerio do endereço é inválido.</value>
+    <value>O numero do endereço é inválido.</value>
   </data>
   <data name="ENDERECO_PAIS_INVALIDO" xml:space="preserve">
     <value>O país informado é inválido.</value>

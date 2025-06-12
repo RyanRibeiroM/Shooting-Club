@@ -34,6 +34,7 @@ namespace ShootingClub.Infrastructure.Migrations.Versions
                 .WithColumn("CNPJ").AsString(20).NotNullable()
                 .WithColumn("EnderecoPais").AsString(50).NotNullable()
                 .WithColumn("EnderecoEstado").AsString(50).NotNullable()
+                .WithColumn("EnderecoCidade").AsString(50).NotNullable()
                 .WithColumn("EnderecoBairro").AsString(50).NotNullable()
                 .WithColumn("EnderecoRua").AsString(50).NotNullable()
                 .WithColumn("EnderecoNumero").AsString(50).NotNullable()

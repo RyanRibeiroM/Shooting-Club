@@ -8,6 +8,7 @@ namespace ShootingClub.Infrastructure.DataAccess
         public ShootingClubDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Clube> Clubes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
