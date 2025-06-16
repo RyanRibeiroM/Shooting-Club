@@ -29,7 +29,7 @@ namespace ShootingClub.Application.UseCases.Usuario.Update
         public async Task Execute(RequestUpdateUsuarioJson request)
         {
             var loggedUsuario = await _loggedUsuario.Usuario();
-            await Validate(request, loggedUsuario.Email, loggedUsuario.CPF);
+            await Validate(request, loggedUsuario.Email, loggedUsuario.CPF, loggedUsuario.DataFiliacao);
 
             var usuario = await _repository.GetById(loggedUsuario.Id);
 
@@ -44,13 +44,17 @@ namespace ShootingClub.Application.UseCases.Usuario.Update
             usuario.EnderecoBairro= request.EnderecoBairro;
             usuario.EnderecoRua = request.EnderecoRua;
             usuario.EnderecoNumero = request.EnderecoNumero;
+            usuario.CR = request.CR;
+            usuario.DataVencimentoCR = request.DataVencimentoCR;
+            usuario.SFPCVinculacao = request.SFPCVinculacao;
+
 
             _repository.Update(usuario);
 
             await _unitOfWork.Commit();
         }
 
-        private async Task Validate(RequestUpdateUsuarioJson request, string CurrentEmail, string CurrentCPF)
+        private async Task Validate(RequestUpdateUsuarioJson request, string CurrentEmail, string CurrentCPF, DateOnly CurrentDataFiliacao)
         {
             var validator = new UpdateUsuarioValidator();
 
@@ -62,7 +66,7 @@ namespace ShootingClub.Application.UseCases.Usuario.Update
                 if (usuarioExist)
                     result.Errors.Add(new FluentValidation.Results.ValidationFailure("email", ResourceMessagesException.EMAIL_JA_CADASTRADO));
             }
-
+            
             if (!CurrentCPF.Equals(request.CPF))
             {
                 var usuarioExistCPF = await _usuarioReadOnlyRepository.ExistActiveUsuarioWithCPF(request.CPF);

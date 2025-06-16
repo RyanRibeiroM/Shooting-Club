@@ -51,6 +51,26 @@ namespace ShootingClub.Application.UseCases.Usuario.Update
             RuleFor(usuario => usuario.EnderecoNumero)
                 .NotEmpty()
                 .WithMessage(ResourceMessagesException.ENDERECO_NUMERO_INVALIDO);
+
+            When(usuario => !string.IsNullOrWhiteSpace(usuario.CR), () =>
+            {
+                RuleFor(usuario => usuario.CR)
+                    .Matches("^[0-9]+$")
+                    .WithMessage(ResourceMessagesException.CR_INVALIDO);
+
+                RuleFor(usuario => usuario.DataVencimentoCR)
+                    .NotEmpty().WithMessage(ResourceMessagesException.DATA_VENCIMENTO_CR_REQUERIDA)
+                    .GreaterThan(DateOnly.FromDateTime(DateTime.Today)).WithMessage(ResourceMessagesException.DATA_VENCIMENTO_CR_INVALIDA);
+
+                RuleFor(usuario => usuario.SFPCVinculacao)
+                    .NotEmpty().WithMessage(ResourceMessagesException.SFPC_VINCULACAO_REQUERIDO);
+            })
+            .Otherwise(() =>
+            {
+                RuleFor(usuario => usuario.DataVencimentoCR)
+                    .Empty()
+                    .WithMessage(ResourceMessagesException.DATA_VENCIMENTO_CR_SEM_CR);
+            });
         }
     }
 }

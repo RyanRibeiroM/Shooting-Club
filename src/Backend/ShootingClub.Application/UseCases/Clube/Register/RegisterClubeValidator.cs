@@ -18,6 +18,10 @@ namespace ShootingClub.Application.UseCases.Clube.Register
                 .Must(CnpjUtils.ValidCNPJ)
                 .WithMessage(ResourceMessagesException.CNPJ_INVALIDO);
 
+            RuleFor(clube => clube.CertificadoRegistro)
+                .NotEmpty()
+                .Matches("^[0-9]+$").WithMessage(ResourceMessagesException.CLUBE_CR_INVALIDO);
+
             RuleFor(clube => clube.EnderecoPais)
                 .NotEmpty()
                 .WithMessage(ResourceMessagesException.ENDERECO_PAIS_INVALIDO);

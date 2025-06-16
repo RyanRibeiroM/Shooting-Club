@@ -70,6 +70,15 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O Certificado de registro do clube está inválido..
+        /// </summary>
+        public static string CLUBE_CR_INVALIDO {
+            get {
+                return ResourceManager.GetString("CLUBE_CR_INVALIDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a CNPJ está inválido..
         /// </summary>
         public static string CNPJ_INVALIDO {
@@ -106,6 +115,24 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O formato da CR está inválido..
+        /// </summary>
+        public static string CR_INVALIDO {
+            get {
+                return ResourceManager.GetString("CR_INVALIDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data da filiação está inválida..
+        /// </summary>
+        public static string DATA_FILIACAO_INVALIDA {
+            get {
+                return ResourceManager.GetString("DATA_FILIACAO_INVALIDA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a A data de nascimento está inválida..
         /// </summary>
         public static string DATA_NASCIMENTO_INVALIDA {
@@ -120,6 +147,33 @@ namespace ShootingClub.Exceptions {
         public static string DATA_RENOVACAO_FILIACAO_INVALIDA {
             get {
                 return ResourceManager.GetString("DATA_RENOVACAO_FILIACAO_INVALIDA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data de vencimento da CR está inválido..
+        /// </summary>
+        public static string DATA_VENCIMENTO_CR_INVALIDA {
+            get {
+                return ResourceManager.GetString("DATA_VENCIMENTO_CR_INVALIDA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data de vencimento da CR deve ser informado..
+        /// </summary>
+        public static string DATA_VENCIMENTO_CR_REQUERIDA {
+            get {
+                return ResourceManager.GetString("DATA_VENCIMENTO_CR_REQUERIDA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O CR deve ser informado para possuir uma data de vencimento..
+        /// </summary>
+        public static string DATA_VENCIMENTO_CR_SEM_CR {
+            get {
+                return ResourceManager.GetString("DATA_VENCIMENTO_CR_SEM_CR", resourceCulture);
             }
         }
         
@@ -273,6 +327,24 @@ namespace ShootingClub.Exceptions {
         public static string SENHA_VAZIA {
             get {
                 return ResourceManager.GetString("SENHA_VAZIA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O SFPC vinculado deve ser fornecido..
+        /// </summary>
+        public static string SFPC_VINCULACAO_REQUERIDO {
+            get {
+                return ResourceManager.GetString("SFPC_VINCULACAO_REQUERIDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O CR deve ser informado para possuir um SFPC vinculado..
+        /// </summary>
+        public static string SFPC_VINCULACAO_SEM_CR {
+            get {
+                return ResourceManager.GetString("SFPC_VINCULACAO_SEM_CR", resourceCulture);
             }
         }
         
