@@ -70,6 +70,15 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O calibre está inválido..
+        /// </summary>
+        public static string CALIBRE_ARMA_INVALIDO {
+            get {
+                return ResourceManager.GetString("CALIBRE_ARMA_INVALIDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O Certificado de registro do clube está inválido..
         /// </summary>
         public static string CLUBE_CR_INVALIDO {
@@ -120,6 +129,24 @@ namespace ShootingClub.Exceptions {
         public static string CR_INVALIDO {
             get {
                 return ResourceManager.GetString("CR_INVALIDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Dados inconsistentes para o tipo de posse da arma..
+        /// </summary>
+        public static string DADOS_INCONSISTENTES_TIPO_POSSE {
+            get {
+                return ResourceManager.GetString("DADOS_INCONSISTENTES_TIPO_POSSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data de expedição do CRAF está inválido..
+        /// </summary>
+        public static string DATA_EXPEDICAO_CRAF_INVALIDA {
+            get {
+                return ResourceManager.GetString("DATA_EXPEDICAO_CRAF_INVALIDA", resourceCulture);
             }
         }
         
@@ -268,11 +295,29 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A marca está vazio..
+        /// </summary>
+        public static string MARCA_ARMA_VAZIO {
+            get {
+                return ResourceManager.GetString("MARCA_ARMA_VAZIO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O nome está inválido..
         /// </summary>
         public static string NOME_INVALIDO {
             get {
                 return ResourceManager.GetString("NOME_INVALIDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O número do certificado está vazio..
+        /// </summary>
+        public static string NUMERO_CERTIFICADO_VAZIO {
+            get {
+                return ResourceManager.GetString("NUMERO_CERTIFICADO_VAZIO", resourceCulture);
             }
         }
         
@@ -291,6 +336,51 @@ namespace ShootingClub.Exceptions {
         public static string NUMERO_FILIACAO_JA_CADASTRADO {
             get {
                 return ResourceManager.GetString("NUMERO_FILIACAO_JA_CADASTRADO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O numero da nota fiscal está vazio..
+        /// </summary>
+        public static string NUMERO_NF_VAZIO {
+            get {
+                return ResourceManager.GetString("NUMERO_NF_VAZIO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O número de registro da PF está vazio..
+        /// </summary>
+        public static string NUMERO_REGISTRO_PF_VAZIO {
+            get {
+                return ResourceManager.GetString("NUMERO_REGISTRO_PF_VAZIO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O número de série está vazio..
+        /// </summary>
+        public static string NUMERO_SERIE_ARMA_VAZIO {
+            get {
+                return ResourceManager.GetString("NUMERO_SERIE_ARMA_VAZIO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O número de SIGMA está inválido..
+        /// </summary>
+        public static string NUMERO_SIGMA_INVALIDO {
+            get {
+                return ResourceManager.GetString("NUMERO_SIGMA_INVALIDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O número do SINARM está vazio..
+        /// </summary>
+        public static string NUMERO_SINARM_VAZIO {
+            get {
+                return ResourceManager.GetString("NUMERO_SINARM_VAZIO", resourceCulture);
             }
         }
         
@@ -349,11 +439,65 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O tipo está vazio..
+        /// </summary>
+        public static string TIPO_ARMA_VAZIO {
+            get {
+                return ResourceManager.GetString("TIPO_ARMA_VAZIO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O tipo da posse da arma é inválido..
+        /// </summary>
+        public static string TIPO_POSSE_ARMA_INVALIDO {
+            get {
+                return ResourceManager.GetString("TIPO_POSSE_ARMA_INVALIDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O usuário não tem permissão para acessar esse recurso..
         /// </summary>
         public static string USUARIO_SEM_PERMISSAO_PARA_ACESSAR_RECURSO {
             get {
                 return ResourceManager.GetString("USUARIO_SEM_PERMISSAO_PARA_ACESSAR_RECURSO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data de validade do certificado está inválido..
+        /// </summary>
+        public static string VALIDADE_CERTIFICADO_INVALIDA {
+            get {
+                return ResourceManager.GetString("VALIDADE_CERTIFICADO_INVALIDA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data de validade do CRAF está inválido..
+        /// </summary>
+        public static string VALIDADE_CRAF_INVALIDA {
+            get {
+                return ResourceManager.GetString("VALIDADE_CRAF_INVALIDA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data de validade da GTE está inválida..
+        /// </summary>
+        public static string VALIDADE_GTE_INVALIDA {
+            get {
+                return ResourceManager.GetString("VALIDADE_GTE_INVALIDA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data de validade está invalida..
+        /// </summary>
+        public static string VALIDADE_PF_INVALIDA {
+            get {
+                return ResourceManager.GetString("VALIDADE_PF_INVALIDA", resourceCulture);
             }
         }
     }

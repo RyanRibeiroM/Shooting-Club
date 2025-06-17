@@ -1,4 +1,4 @@
-﻿namespace ShootingClub.Communication.Enum
+﻿namespace ShootingClub.Communication.Enums
 {
     public enum TipoPosseArma
     {

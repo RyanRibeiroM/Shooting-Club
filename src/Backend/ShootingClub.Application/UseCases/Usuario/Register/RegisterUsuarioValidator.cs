@@ -68,7 +68,7 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
             RuleFor(usuario => usuario.DataRenovacaoFiliacao)
                 .NotEmpty()
                 .LessThanOrEqualTo(_ => DateOnly.FromDateTime(DateTime.Today))
-                .Must((usuario, dataRenovacao) => dataRenovacao > usuario.DataFiliacao)
+                .Must((usuario, dataRenovacao) => dataRenovacao >= usuario.DataFiliacao)
                 .WithMessage(ResourceMessagesException.DATA_RENOVACAO_FILIACAO_INVALIDA);
 
             When(usuario => !string.IsNullOrWhiteSpace(usuario.CR), () =>

@@ -46,22 +46,29 @@ namespace ShootingClub.Infrastructure.Migrations.Versions
                 .WithColumn("Marca").AsString(150).NotNullable()
                 .WithColumn("Calibre").AsDecimal(8, 4).Nullable()
                 .WithColumn("NumeroSerie").AsString(50).NotNullable()
-                .WithColumn("TipoPosse").AsInt32().Nullable()
+                .WithColumn("TipoPosse").AsInt32().NotNullable()
+                .WithColumn("UsuarioId").AsInt32().NotNullable()
+                .WithColumn("ClubeId").AsInt32().NotNullable()
+
+
+                //
                 .WithColumn("NumeroSigma").AsString(50).Nullable()
-                .WithColumn("NumeroSinarm").AsString(50).Nullable()
-                .WithColumn("UsuarioId").AsInt32().Nullable()
-                .WithColumn("ClubeId").AsInt32().Nullable()
-                .WithColumn("NumeroGTE").AsString(100).Nullable()
-                .WithColumn("ValidadeGTE").AsDate().Nullable()
-                .WithColumn("NumeroCertificado").AsString(50).Nullable()
-                .WithColumn("DataCertificacao").AsDate().Nullable()
-                .WithColumn("ValidadeCertificacao").AsDate().Nullable()
                 .WithColumn("DataExpedicaoCRAF").AsDate().Nullable()
                 .WithColumn("ValidadeCRAF").AsDate().Nullable()
                 .WithColumn("LocalRegistro").AsString(100).Nullable()
+                .WithColumn("NumeroGTE").AsString(100).Nullable()
+                .WithColumn("ValidadeGTE").AsDate().Nullable()
+                .WithColumn("NumeroSinarm").AsString(100).Nullable()
+
+                //
                 .WithColumn("NumeroRegistroPF").AsString(100).Nullable()
                 .WithColumn("NumeroNotaFiscal").AsString(100).Nullable()
-                .WithColumn("DataValidadePF").AsDate().Nullable();
+                .WithColumn("DataValidadePF").AsDate().Nullable()
+
+                //
+                .WithColumn("NumeroCertificado").AsString(50).Nullable()
+                .WithColumn("DataCertificacao").AsDate().Nullable()
+                .WithColumn("ValidadeCertificacao").AsDate().Nullable();
 
             CreateTable("Emprestimos")
                 .WithColumn("Status").AsInt32().NotNullable()

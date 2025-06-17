@@ -20,6 +20,9 @@ namespace ShootingClub.Application.Services.AutoMapper
 
             CreateMap<RequestRegisterClubeJson, Domain.Entities.Clube>()
                 .ForMember(dest => dest.CNPJ, opt => opt.Ignore());
+
+            CreateMap<RequestArmaJson, Domain.Entities.Arma>();
+
         }
 
         private void DomainToResponse()

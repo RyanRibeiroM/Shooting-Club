@@ -1,16 +1,14 @@
-﻿using ShootingClub.Domain.Enums;
+﻿using ShootingClub.Communication.Enums;
 
-namespace ShootingClub.Domain.Entities
+namespace ShootingClub.Communication.Requests
 {
-    public class Arma : EntityBase
+    public class RequestArmaJson
     {
         public string Tipo { get; set; } = string.Empty;
         public string Marca { get; set; } = string.Empty;
         public decimal? Calibre { get; set; }
         public string NumeroSerie { get; set; } = string.Empty;
         public TipoPosseArma TipoPosse { get; set; }
-        public int UsuarioId { get; set; }
-        public int ClubeId { get; set; }
         public string? NumeroSigma { get; set; }
         public string? LocalRegistro { get; set; }
         public DateOnly? DataExpedicaoCRAF { get; set; }

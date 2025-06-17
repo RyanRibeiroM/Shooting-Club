@@ -120,6 +120,9 @@
   <data name="ADMIN_JA_POSSUI_CLUBE" xml:space="preserve">
     <value>Você já possui um clube registrado.</value>
   </data>
+  <data name="CALIBRE_ARMA_INVALIDO" xml:space="preserve">
+    <value>O calibre está inválido.</value>
+  </data>
   <data name="CLUBE_CR_INVALIDO" xml:space="preserve">
     <value>O Certificado de registro do clube está inválido.</value>
   </data>
@@ -137,6 +140,12 @@
   </data>
   <data name="CR_INVALIDO" xml:space="preserve">
     <value>O formato da CR está inválido.</value>
+  </data>
+  <data name="DADOS_INCONSISTENTES_TIPO_POSSE" xml:space="preserve">
+    <value>Dados inconsistentes para o tipo de posse da arma.</value>
+  </data>
+  <data name="DATA_EXPEDICAO_CRAF_INVALIDA" xml:space="preserve">
+    <value>A data de expedição do CRAF está inválido.</value>
   </data>
   <data name="DATA_FILIACAO_INVALIDA" xml:space="preserve">
     <value>A data da filiação está inválida.</value>
@@ -186,14 +195,35 @@
   <data name="ERRO_DESCONHECIDO" xml:space="preserve">
     <value>Erro Desconhecido.</value>
   </data>
+  <data name="MARCA_ARMA_VAZIO" xml:space="preserve">
+    <value>A marca está vazio.</value>
+  </data>
   <data name="NOME_INVALIDO" xml:space="preserve">
     <value>O nome está inválido.</value>
+  </data>
+  <data name="NUMERO_CERTIFICADO_VAZIO" xml:space="preserve">
+    <value>O número do certificado está vazio.</value>
   </data>
   <data name="NUMERO_FILIACAO_INVALIDO" xml:space="preserve">
     <value>O número da filiação está inválido.</value>
   </data>
   <data name="NUMERO_FILIACAO_JA_CADASTRADO" xml:space="preserve">
     <value>O número de Filiação já foi cadastrado.</value>
+  </data>
+  <data name="NUMERO_NF_VAZIO" xml:space="preserve">
+    <value>O numero da nota fiscal está vazio.</value>
+  </data>
+  <data name="NUMERO_REGISTRO_PF_VAZIO" xml:space="preserve">
+    <value>O número de registro da PF está vazio.</value>
+  </data>
+  <data name="NUMERO_SERIE_ARMA_VAZIO" xml:space="preserve">
+    <value>O número de série está vazio.</value>
+  </data>
+  <data name="NUMERO_SIGMA_INVALIDO" xml:space="preserve">
+    <value>O número de SIGMA está inválido.</value>
+  </data>
+  <data name="NUMERO_SINARM_VAZIO" xml:space="preserve">
+    <value>O número do SINARM está vazio.</value>
   </data>
   <data name="SEM_TOKEN" xml:space="preserve">
     <value>O token não foi enviado.</value>
@@ -213,7 +243,25 @@
   <data name="SFPC_VINCULACAO_SEM_CR" xml:space="preserve">
     <value>O CR deve ser informado para possuir um SFPC vinculado.</value>
   </data>
+  <data name="TIPO_ARMA_VAZIO" xml:space="preserve">
+    <value>O tipo está vazio.</value>
+  </data>
+  <data name="TIPO_POSSE_ARMA_INVALIDO" xml:space="preserve">
+    <value>O tipo da posse da arma é inválido.</value>
+  </data>
   <data name="USUARIO_SEM_PERMISSAO_PARA_ACESSAR_RECURSO" xml:space="preserve">
     <value>O usuário não tem permissão para acessar esse recurso.</value>
+  </data>
+  <data name="VALIDADE_CERTIFICADO_INVALIDA" xml:space="preserve">
+    <value>A data de validade do certificado está inválido.</value>
+  </data>
+  <data name="VALIDADE_CRAF_INVALIDA" xml:space="preserve">
+    <value>A data de validade do CRAF está inválido.</value>
+  </data>
+  <data name="VALIDADE_GTE_INVALIDA" xml:space="preserve">
+    <value>A data de validade da GTE está inválida.</value>
+  </data>
+  <data name="VALIDADE_PF_INVALIDA" xml:space="preserve">
+    <value>A data de validade está invalida.</value>
   </data>
 </root>

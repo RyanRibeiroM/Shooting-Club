@@ -9,7 +9,7 @@ namespace ShootingClub.Infrastructure.DataAccess
 
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Clube> Clubes { get; set; }
-
+        public DbSet<Arma> Armas { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShootingClubDbContext).Assembly);
