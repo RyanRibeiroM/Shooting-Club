@@ -5,6 +5,6 @@ namespace ShootingClub.Application.UseCases.Arma.Register
 {
     public interface IRegisterArmaUseCase
     {
-        public Task<ResponseRegisteredArmaJson> Execute(RequestArmaJson request);
+        public Task<ResponseRegisteredArmaJson> Execute(RequestArmaBaseJson request);
     }
 }

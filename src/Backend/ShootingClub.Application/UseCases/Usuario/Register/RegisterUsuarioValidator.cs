@@ -1,23 +1,33 @@
 ﻿using FluentValidation;
+using FluentValidation.Validators;
 using ShootingClub.Application.SharedValidators;
 using ShootingClub.Application.Utils;
 using ShootingClub.Communication.Requests;
 using ShootingClub.Exceptions;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace ShootingClub.Application.UseCases.Usuario.Register
 {
     public class RegisterUsuarioValidator : AbstractValidator<RequestRegisterUsuarioJson>
     {
+        private const string TextOnlyRegex = @"^[a-zA-Z\u00C0-\u017F\s'-]+$";
+        private const string TextAndNumbersRegex = @"^[a-zA-Z0-9\u00C0-\u017F\s'-]+$";
+        private const string PositiveIntegerRegex = @"^[1-9][0-9]*$";
+        private const string SfpcRegex = @"^(1[0-2]|[1-9])ª\sRM$";
+
+
         public RegisterUsuarioValidator()
         {
             RuleFor(usuario => usuario.Nome)
                 .NotEmpty()
                 .Must(nome => nome.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries).Length >= 2)
-                .WithMessage(ResourceMessagesException.NOME_INVALIDO);
+                    .WithMessage(ResourceMessagesException.NOME_INVALIDO)
+                .Matches(TextOnlyRegex)
+                    .WithMessage(ResourceMessagesException.NOME_COM_CARACTERES_ESPECIAIS);
 
             RuleFor(usuario => usuario.Email).NotEmpty()
-                .EmailAddress()
+                .Must(EmailUtils.IsValidEmail)
                 .WithMessage(ResourceMessagesException.EMAIL_INVALIDO);
 
             RuleFor(usuario => usuario.Senha).SetValidator(new SenhaValidator<RequestRegisterUsuarioJson>());
@@ -34,19 +44,27 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
 
             RuleFor(usuario => usuario.EnderecoPais)
                 .NotEmpty()
-                .WithMessage(ResourceMessagesException.ENDERECO_PAIS_INVALIDO);
+                    .WithMessage(ResourceMessagesException.ENDERECO_PAIS_INVALIDO)
+                .Matches(TextAndNumbersRegex)
+                    .WithMessage(ResourceMessagesException.ENDERECO_COM_CARACTERES_ESPECIAIS);
 
             RuleFor(usuario => usuario.EnderecoEstado)
                 .NotEmpty()
-                .WithMessage(ResourceMessagesException.ENDERECO_ESTADO_INVALIDO);
+                    .WithMessage(ResourceMessagesException.ENDERECO_ESTADO_INVALIDO)
+                .Matches(TextAndNumbersRegex)
+                    .WithMessage(ResourceMessagesException.ENDERECO_COM_CARACTERES_ESPECIAIS);
 
             RuleFor(usuario => usuario.EnderecoCidade)
                 .NotEmpty()
-                .WithMessage(ResourceMessagesException.ENDERECO_CIDADE_INVALIDO);
+                    .WithMessage(ResourceMessagesException.ENDERECO_CIDADE_INVALIDO)
+                .Matches(TextAndNumbersRegex)
+                    .WithMessage(ResourceMessagesException.ENDERECO_COM_CARACTERES_ESPECIAIS);
 
             RuleFor(usuario => usuario.EnderecoBairro)
                 .NotEmpty()
-                .WithMessage(ResourceMessagesException.ENDERECO_BAIRRO_INVALIDO);
+                    .WithMessage(ResourceMessagesException.ENDERECO_BAIRRO_INVALIDO)
+                .Matches(TextAndNumbersRegex)
+                    .WithMessage(ResourceMessagesException.ENDERECO_COM_CARACTERES_ESPECIAIS);
 
             RuleFor(usuario => usuario.EnderecoRua)
                 .NotEmpty()
@@ -58,12 +76,15 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
 
             RuleFor(usuario => usuario.NumeroFiliacao)
                 .NotEmpty()
+                .Matches(PositiveIntegerRegex)
                 .WithMessage(ResourceMessagesException.NUMERO_FILIACAO_INVALIDO);
 
             RuleFor(usuario => usuario.DataFiliacao)
                 .NotEmpty()
                 .LessThanOrEqualTo(_ => DateOnly.FromDateTime(DateTime.Today))
                 .WithMessage(ResourceMessagesException.DATA_FILIACAO_INVALIDA);
+
+
 
             RuleFor(usuario => usuario.DataRenovacaoFiliacao)
                 .NotEmpty()
@@ -74,7 +95,7 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
             When(usuario => !string.IsNullOrWhiteSpace(usuario.CR), () =>
             {
                 RuleFor(usuario => usuario.CR)
-                    .Matches("^[0-9]+$")
+                    .Matches(PositiveIntegerRegex)
                     .WithMessage(ResourceMessagesException.CR_INVALIDO);
 
                 RuleFor(usuario => usuario.DataVencimentoCR)
@@ -82,7 +103,9 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
                     .GreaterThan(DateOnly.FromDateTime(DateTime.Today)).WithMessage(ResourceMessagesException.DATA_VENCIMENTO_CR_INVALIDA);
 
                 RuleFor(usuario => usuario.SFPCVinculacao)
-                    .NotEmpty().WithMessage(ResourceMessagesException.SFPC_VINCULACAO_REQUERIDO);
+                    .NotEmpty().WithMessage(ResourceMessagesException.SFPC_VINCULACAO_REQUERIDO)
+                    .Matches(SfpcRegex)
+                    .WithMessage(ResourceMessagesException.SFPC_VINCULACAO_INVALIDA);
             })
             .Otherwise(() =>
             {

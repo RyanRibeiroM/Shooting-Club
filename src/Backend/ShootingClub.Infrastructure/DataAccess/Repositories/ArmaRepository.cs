@@ -9,7 +9,7 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
 
         public ArmaRepository(ShootingClubDbContext dbContext) => _dbContext = dbContext;
 
-        public async Task Add(Arma arma) => await _dbContext.Armas.AddAsync(arma);
+        public async Task Add(ArmaBase arma) => await _dbContext.Armas.AddAsync(arma);
 
     }
 }

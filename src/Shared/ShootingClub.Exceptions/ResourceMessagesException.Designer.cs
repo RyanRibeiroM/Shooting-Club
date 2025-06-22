@@ -133,11 +133,29 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O CR já está cadastrado já foi cadastrado..
+        /// </summary>
+        public static string CR_JA_CADASTRADO {
+            get {
+                return ResourceManager.GetString("CR_JA_CADASTRADO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Dados inconsistentes para o tipo de posse da arma..
         /// </summary>
         public static string DADOS_INCONSISTENTES_TIPO_POSSE {
             get {
                 return ResourceManager.GetString("DADOS_INCONSISTENTES_TIPO_POSSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A data do certificado está inválida..
+        /// </summary>
+        public static string DATA_CERTIFICADO_INVALIDA {
+            get {
+                return ResourceManager.GetString("DATA_CERTIFICADO_INVALIDA", resourceCulture);
             }
         }
         
@@ -250,6 +268,15 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O Endereço não pode conter caracteres especiais..
+        /// </summary>
+        public static string ENDERECO_COM_CARACTERES_ESPECIAIS {
+            get {
+                return ResourceManager.GetString("ENDERECO_COM_CARACTERES_ESPECIAIS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O estado informado é inválido..
         /// </summary>
         public static string ENDERECO_ESTADO_INVALIDO {
@@ -295,11 +322,29 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O local de registro está vazio..
+        /// </summary>
+        public static string LOCAL_REGISTRO_VAZIO {
+            get {
+                return ResourceManager.GetString("LOCAL_REGISTRO_VAZIO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a A marca está vazio..
         /// </summary>
         public static string MARCA_ARMA_VAZIO {
             get {
                 return ResourceManager.GetString("MARCA_ARMA_VAZIO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O nome não pode ter caracteres especiais..
+        /// </summary>
+        public static string NOME_COM_CARACTERES_ESPECIAIS {
+            get {
+                return ResourceManager.GetString("NOME_COM_CARACTERES_ESPECIAIS", resourceCulture);
             }
         }
         
@@ -417,6 +462,15 @@ namespace ShootingClub.Exceptions {
         public static string SENHA_VAZIA {
             get {
                 return ResourceManager.GetString("SENHA_VAZIA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O SFPC da vinculação está inválido..
+        /// </summary>
+        public static string SFPC_VINCULACAO_INVALIDA {
+            get {
+                return ResourceManager.GetString("SFPC_VINCULACAO_INVALIDA", resourceCulture);
             }
         }
         

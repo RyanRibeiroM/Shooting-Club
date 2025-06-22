@@ -50,8 +50,6 @@ namespace ShootingClub.Infrastructure.Migrations.Versions
                 .WithColumn("UsuarioId").AsInt32().NotNullable()
                 .WithColumn("ClubeId").AsInt32().NotNullable()
 
-
-                //
                 .WithColumn("NumeroSigma").AsString(50).Nullable()
                 .WithColumn("DataExpedicaoCRAF").AsDate().Nullable()
                 .WithColumn("ValidadeCRAF").AsDate().Nullable()
@@ -60,12 +58,10 @@ namespace ShootingClub.Infrastructure.Migrations.Versions
                 .WithColumn("ValidadeGTE").AsDate().Nullable()
                 .WithColumn("NumeroSinarm").AsString(100).Nullable()
 
-                //
                 .WithColumn("NumeroRegistroPF").AsString(100).Nullable()
                 .WithColumn("NumeroNotaFiscal").AsString(100).Nullable()
                 .WithColumn("DataValidadePF").AsDate().Nullable()
 
-                //
                 .WithColumn("NumeroCertificado").AsString(50).Nullable()
                 .WithColumn("DataCertificacao").AsDate().Nullable()
                 .WithColumn("ValidadeCertificacao").AsDate().Nullable();

@@ -141,8 +141,14 @@
   <data name="CR_INVALIDO" xml:space="preserve">
     <value>O formato da CR está inválido.</value>
   </data>
+  <data name="CR_JA_CADASTRADO" xml:space="preserve">
+    <value>O CR já está cadastrado já foi cadastrado.</value>
+  </data>
   <data name="DADOS_INCONSISTENTES_TIPO_POSSE" xml:space="preserve">
     <value>Dados inconsistentes para o tipo de posse da arma.</value>
+  </data>
+  <data name="DATA_CERTIFICADO_INVALIDA" xml:space="preserve">
+    <value>A data do certificado está inválida.</value>
   </data>
   <data name="DATA_EXPEDICAO_CRAF_INVALIDA" xml:space="preserve">
     <value>A data de expedição do CRAF está inválido.</value>
@@ -180,6 +186,9 @@
   <data name="ENDERECO_CIDADE_INVALIDO" xml:space="preserve">
     <value>A cidade informado é inválido.</value>
   </data>
+  <data name="ENDERECO_COM_CARACTERES_ESPECIAIS" xml:space="preserve">
+    <value>O Endereço não pode conter caracteres especiais.</value>
+  </data>
   <data name="ENDERECO_ESTADO_INVALIDO" xml:space="preserve">
     <value>O estado informado é inválido.</value>
   </data>
@@ -195,8 +204,14 @@
   <data name="ERRO_DESCONHECIDO" xml:space="preserve">
     <value>Erro Desconhecido.</value>
   </data>
+  <data name="LOCAL_REGISTRO_VAZIO" xml:space="preserve">
+    <value>O local de registro está vazio.</value>
+  </data>
   <data name="MARCA_ARMA_VAZIO" xml:space="preserve">
     <value>A marca está vazio.</value>
+  </data>
+  <data name="NOME_COM_CARACTERES_ESPECIAIS" xml:space="preserve">
+    <value>O nome não pode ter caracteres especiais.</value>
   </data>
   <data name="NOME_INVALIDO" xml:space="preserve">
     <value>O nome está inválido.</value>
@@ -236,6 +251,9 @@
   </data>
   <data name="SENHA_VAZIA" xml:space="preserve">
     <value>A senha está vazia.</value>
+  </data>
+  <data name="SFPC_VINCULACAO_INVALIDA" xml:space="preserve">
+    <value>O SFPC da vinculação está inválido.</value>
   </data>
   <data name="SFPC_VINCULACAO_REQUERIDO" xml:space="preserve">
     <value>O SFPC vinculado deve ser fornecido.</value>

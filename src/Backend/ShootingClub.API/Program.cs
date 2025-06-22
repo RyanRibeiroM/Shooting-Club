@@ -9,8 +9,9 @@ using ShootingClub.Infrastructure;
 using ShootingClub.Infrastructure.Extensions;
 using ShootingClub.Infrastructure.Migrations;
 
-var builder = WebApplication.CreateBuilder(args);
+const string CORSSpecifcOrigins = "_myAllowSpecificOrigins";
 
+var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new StringConverter()));
@@ -49,6 +50,17 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: CORSSpecifcOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:5173") // URL do seu front-end React
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                      });
+});
+
 builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
 
 builder.Services.AddApplication(builder.Configuration);
@@ -66,6 +78,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    app.UseCors(CORSSpecifcOrigins); // Habilita a política de CORS
 }
 
 app.UseMiddleware<CultureMiddleware>();

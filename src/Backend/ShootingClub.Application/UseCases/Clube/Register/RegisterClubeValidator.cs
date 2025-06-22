@@ -7,6 +7,7 @@ namespace ShootingClub.Application.UseCases.Clube.Register
 {
     public class RegisterClubeValidator : AbstractValidator<RequestRegisterClubeJson>
     {
+        private const string TextAndNumbersRegex = @"^[a-zA-Z0-9\u00C0-\u017F\s'-]+$";
         public RegisterClubeValidator()
         {
             RuleFor(clube => clube.Nome)
@@ -24,19 +25,27 @@ namespace ShootingClub.Application.UseCases.Clube.Register
 
             RuleFor(clube => clube.EnderecoPais)
                 .NotEmpty()
-                .WithMessage(ResourceMessagesException.ENDERECO_PAIS_INVALIDO);
+                    .WithMessage(ResourceMessagesException.ENDERECO_PAIS_INVALIDO)
+                .Matches(TextAndNumbersRegex)
+                    .WithMessage(ResourceMessagesException.ENDERECO_COM_CARACTERES_ESPECIAIS);
 
             RuleFor(clube => clube.EnderecoEstado)
                 .NotEmpty()
-                .WithMessage(ResourceMessagesException.ENDERECO_ESTADO_INVALIDO);
+                    .WithMessage(ResourceMessagesException.ENDERECO_ESTADO_INVALIDO)
+                .Matches(TextAndNumbersRegex)
+                    .WithMessage(ResourceMessagesException.ENDERECO_COM_CARACTERES_ESPECIAIS);
 
             RuleFor(clube => clube.EnderecoCidade)
                 .NotEmpty()
-                .WithMessage(ResourceMessagesException.ENDERECO_CIDADE_INVALIDO);
+                    .WithMessage(ResourceMessagesException.ENDERECO_CIDADE_INVALIDO)
+                .Matches(TextAndNumbersRegex)
+                    .WithMessage(ResourceMessagesException.ENDERECO_COM_CARACTERES_ESPECIAIS);
 
             RuleFor(clube => clube.EnderecoBairro)
                 .NotEmpty()
-                .WithMessage(ResourceMessagesException.ENDERECO_BAIRRO_INVALIDO);
+                    .WithMessage(ResourceMessagesException.ENDERECO_BAIRRO_INVALIDO)
+                .Matches(TextAndNumbersRegex)
+                    .WithMessage(ResourceMessagesException.ENDERECO_COM_CARACTERES_ESPECIAIS);
 
             RuleFor(clube => clube.EnderecoRua)
                 .NotEmpty()

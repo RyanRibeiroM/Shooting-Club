@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ShootingClub.Communication.Requests;
 using ShootingClub.Communication.Responses;
+using ShootingClub.Domain.Entities;
 
 namespace ShootingClub.Application.Services.AutoMapper
 {
@@ -21,7 +22,14 @@ namespace ShootingClub.Application.Services.AutoMapper
             CreateMap<RequestRegisterClubeJson, Domain.Entities.Clube>()
                 .ForMember(dest => dest.CNPJ, opt => opt.Ignore());
 
-            CreateMap<RequestArmaJson, Domain.Entities.Arma>();
+            CreateMap<RequestArmaBaseJson, ArmaBase>()
+                .Include<RequestArmaExercitoJson, ArmaExercito>()
+                .Include<RequestArmaPFJson, ArmaPF>()
+                .Include<RequestArmaPorteJson, ArmaPortePessoal>();
+
+            CreateMap<RequestArmaExercitoJson, ArmaExercito>();
+            CreateMap<RequestArmaPFJson, ArmaPF>();
+            CreateMap<RequestArmaPorteJson, ArmaPortePessoal>();
 
         }
 

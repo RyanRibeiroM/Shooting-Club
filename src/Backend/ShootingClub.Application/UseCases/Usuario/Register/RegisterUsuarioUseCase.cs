@@ -64,12 +64,17 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
 
             var result = validator.Validate(request);
 
+            var cpf = CpfUtils.Format(request.CPF);
             var EmailExist = await _usuarioReadOnlyRepository.ExistActiveUsuarioWithEmail(request.Email);
-            var CPFexist = await _usuarioReadOnlyRepository.ExistActiveUsuarioWithCPF(request.CPF);
+            var CPFexist = await _usuarioReadOnlyRepository.ExistActiveUsuarioWithCPF(cpf);
+            var CRexist = await _usuarioReadOnlyRepository.ExistActiveUsuarioWithCR(request.CR);
             var NumeroFiliacaoExist = await _usuarioReadOnlyRepository.ExistActiveUsuarioWithNumeroFiliacao(request.NumeroFiliacao);
 
             if (EmailExist)
                 result.Errors.Add(new FluentValidation.Results.ValidationFailure(string.Empty, ResourceMessagesException.EMAIL_JA_CADASTRADO));
+
+            if(CRexist)
+                result.Errors.Add(new FluentValidation.Results.ValidationFailure(string.Empty, ResourceMessagesException.CR_JA_CADASTRADO));
 
             if (CPFexist)
                 result.Errors.Add(new FluentValidation.Results.ValidationFailure(string.Empty, ResourceMessagesException.CPF_JA_CADASTRADO));

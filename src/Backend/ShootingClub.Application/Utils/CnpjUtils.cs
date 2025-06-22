@@ -12,6 +12,9 @@ namespace ShootingClub.Application.Utils
             if (Regex.IsMatch(cnpj, @"^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$"))
                 return cnpj;
 
+            if (ValidCNPJ(cnpj))
+                return cnpj;
+
             var digits = new string(cnpj.Where(char.IsDigit).ToArray());
             if (digits.Length != 14)
                 return cnpj;

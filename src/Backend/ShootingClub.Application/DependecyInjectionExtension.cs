@@ -36,6 +36,7 @@ namespace ShootingClub.Application
             services.AddScoped<IChangeSenhaUseCase, ChangeSenhaUseCase>();
             services.AddScoped<IRegisterClubeUseCase, RegisterClubeUseCase>();
             services.AddScoped<IRegisterArmaUseCase, RegisterArmaUseCase>();
+
         }
 
     }

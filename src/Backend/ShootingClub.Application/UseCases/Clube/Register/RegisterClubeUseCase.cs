@@ -53,9 +53,9 @@ namespace ShootingClub.Application.UseCases.Clube.Register
             var validator = new RegisterClubeValidator();
 
             var result = validator.Validate(request);
-
+            var cnpj = CnpjUtils.Format(request.CNPJ);
             var AdminExist = await _clubeReadOnlyRepository.ExistActiveClubeWithAdmin(idUsuario);
-            var cnpjExist = await _clubeReadOnlyRepository.ExistActiveClubeWithCNPJ(request.CNPJ);
+            var cnpjExist = await _clubeReadOnlyRepository.ExistActiveClubeWithCNPJ(cnpj);
 
             if (AdminExist)
                 result.Errors.Add(new FluentValidation.Results.ValidationFailure(string.Empty, ResourceMessagesException.ADMIN_JA_POSSUI_CLUBE));

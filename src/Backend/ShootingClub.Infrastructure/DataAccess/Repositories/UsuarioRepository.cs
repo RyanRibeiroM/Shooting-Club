@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ShootingClub.Domain.Entities;
 using ShootingClub.Domain.Enums;
 using ShootingClub.Domain.Repositories.Usuario;
@@ -24,10 +25,16 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
             return await _dbContext.Usuarios.AnyAsync(usuario => usuario.CPF.Equals(cpf) && usuario.Ativo);
         }
 
+        public async Task<bool> ExistActiveUsuarioWithCR(string cr)
+        {
+            return await _dbContext.Usuarios.AnyAsync(usuario => usuario.CR.Equals(cr) && usuario.Ativo);
+        }
+
         public async Task<bool> ExistActiveUsuarioWithNumeroFiliacao(string numeroFiliacao)
         {
             return await _dbContext.Usuarios.AnyAsync(usuario => usuario.NumeroFiliacao.Equals(numeroFiliacao) && usuario.Ativo);
         }
+
 
         public async Task<Usuario?> GetByEmailAndSenha(string email, string senha)
         {
@@ -49,6 +56,5 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
         }
 
         public void Update(Usuario usuario) => _dbContext.Usuarios.Update(usuario);
-        
     }
 }

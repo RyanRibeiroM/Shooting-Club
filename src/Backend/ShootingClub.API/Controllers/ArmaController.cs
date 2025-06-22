@@ -6,7 +6,7 @@ using ShootingClub.Communication.Responses;
 
 namespace ShootingClub.API.Controllers
 {
-[AuthenticatedUsuario]
+ //[AuthenticatedUsuario]
     public class ArmaController : ShootingClubBaseController
     {
         [HttpPost]
@@ -14,7 +14,7 @@ namespace ShootingClub.API.Controllers
         [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register(
             [FromServices] IRegisterArmaUseCase useCase,
-            [FromBody] RequestArmaJson request)
+            [FromBody] RequestArmaBaseJson request)
         {
             var response = await useCase.Execute(request);
             return Created(string.Empty, response);
