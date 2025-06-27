@@ -1,20 +1,26 @@
 using Microsoft.OpenApi.Models;
+using ShootingClub.API.Configuration;
 using ShootingClub.API.Converters;
 using ShootingClub.API.Filters;
 using ShootingClub.API.Middleware;
 using ShootingClub.API.Token;
 using ShootingClub.Application;
+using ShootingClub.Communication.Enums;
+using ShootingClub.Communication.Requests;
 using ShootingClub.Domain.Security.Tokens;
 using ShootingClub.Infrastructure;
 using ShootingClub.Infrastructure.Extensions;
 using ShootingClub.Infrastructure.Migrations;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 
 const string CORSSpecifcOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
-builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new StringConverter()));
+builder.Services.AddApiConfiguration();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -55,7 +61,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: CORSSpecifcOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:5173") // URL do seu front-end React
+                          policy.WithOrigins("http://localhost:5173")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
@@ -84,7 +90,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors(CORSSpecifcOrigins); // Habilita a política de CORS
+    app.UseCors(CORSSpecifcOrigins);
 }
 
 app.UseMiddleware<CultureMiddleware>();

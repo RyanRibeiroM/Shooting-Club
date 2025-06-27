@@ -1,6 +1,4 @@
-﻿using ShootingClub.Domain.Entities;
-
-namespace ShootingClub.Domain.Repositories.Arma
+﻿namespace ShootingClub.Domain.Repositories.Arma
 {
     public interface IArmaWriteOnlyRepository
     {

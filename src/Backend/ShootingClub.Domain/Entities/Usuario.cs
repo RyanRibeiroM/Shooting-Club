@@ -22,7 +22,7 @@ namespace ShootingClub.Domain.Entities
         public string NumeroFiliacao { get; set; } = string.Empty;
         public DateOnly DataFiliacao { get; set; }
         public DateOnly DataRenovacaoFiliacao { get; set; }
-        public int ClubeId { get; set; } = 1; // Uso enquanto a logica de admin não é implementada;
+        public int ClubeId { get; set; }
         public Guid IdentificadorUsuario { get; set; }
     }
 }

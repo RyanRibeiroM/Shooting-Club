@@ -61,11 +61,29 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A ação é inválida para o CPF informado..
+        /// </summary>
+        public static string ACAO_INVALIDA_CPF_INFORMADO {
+            get {
+                return ResourceManager.GetString("ACAO_INVALIDA_CPF_INFORMADO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Você já possui um clube registrado..
         /// </summary>
         public static string ADMIN_JA_POSSUI_CLUBE {
             get {
                 return ResourceManager.GetString("ADMIN_JA_POSSUI_CLUBE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O Administrador não possui um clube para que possa realizar essa ação..
+        /// </summary>
+        public static string ADMIN_NAO_POSSUI_CLUBE_CADASTRADO {
+            get {
+                return ResourceManager.GetString("ADMIN_NAO_POSSUI_CLUBE_CADASTRADO", resourceCulture);
             }
         }
         
@@ -120,6 +138,15 @@ namespace ShootingClub.Exceptions {
         public static string CPF_JA_CADASTRADO {
             get {
                 return ResourceManager.GetString("CPF_JA_CADASTRADO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível encontrar um usuário com esse CPF..
+        /// </summary>
+        public static string CPF_USUARIO_INEXISTENTE {
+            get {
+                return ResourceManager.GetString("CPF_USUARIO_INEXISTENTE", resourceCulture);
             }
         }
         

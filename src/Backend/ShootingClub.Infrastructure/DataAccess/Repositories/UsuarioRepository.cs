@@ -25,6 +25,11 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
             return await _dbContext.Usuarios.AnyAsync(usuario => usuario.CPF.Equals(cpf) && usuario.Ativo);
         }
 
+        public async Task<bool> ExistActiveUsuarioWithClubeAndCPF(int clubeId, string cpf)
+        {
+            return await _dbContext.Usuarios.AnyAsync(usuario => usuario.CPF.Equals(cpf) && usuario.ClubeId.Equals(clubeId) && usuario.Ativo); 
+        }
+
         public async Task<bool> ExistActiveUsuarioWithCR(string cr)
         {
             return await _dbContext.Usuarios.AnyAsync(usuario => usuario.CR.Equals(cr) && usuario.Ativo);
@@ -44,9 +49,16 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
                 .FirstOrDefaultAsync(usuario =>usuario.Ativo && usuario.Email.Equals(email) && usuario.Senha.Equals(senha));
         }
 
-        public async Task<bool> ExistActiveUserWithIdentificador(Guid IdentificadorUsuario) => await _dbContext.Usuarios.AnyAsync(usuario => usuario.IdentificadorUsuario.Equals(IdentificadorUsuario) && usuario.Ativo);
+        public async Task<int> GetIdUsuarioByCPF(string cpf)
+        {
+            return await _dbContext
+                .Usuarios
+                .Where(usuario => usuario.CPF.Equals(cpf) && usuario.Ativo)
+                .Select(usuario => usuario.Id)
+                .FirstOrDefaultAsync();
+        }
 
-        public async Task<bool> ExistActiveAdminWithIdentificador(Guid IdentificadorUsuario) => await _dbContext.Usuarios.AnyAsync(usuario => usuario.IdentificadorUsuario.Equals(IdentificadorUsuario) && usuario.Ativo && usuario.Nivel == NivelUsuario.AdminUsuario);
+        public async Task<bool> ExistActiveUserWithIdentificador(Guid IdentificadorUsuario) => await _dbContext.Usuarios.AnyAsync(usuario => usuario.IdentificadorUsuario.Equals(IdentificadorUsuario) && usuario.Ativo);
 
         public async Task<Usuario> GetById(int id)
         {
@@ -55,6 +67,17 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
                 .FirstAsync(usuario => usuario.Id == id);
         }
 
+        public async Task<Usuario?> GetActiveUserByIdentificador(Guid identificadorUsuario)
+        {
+            return await _dbContext.Usuarios
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.IdentificadorUsuario == identificadorUsuario && u.Ativo);
+        }
+
+        public async Task<bool> ActiveUsuarioHasClube(Guid IdentificadorUsuario)
+        {
+            return await _dbContext.Usuarios.AnyAsync(usuario => usuario.IdentificadorUsuario.Equals(IdentificadorUsuario) && usuario.Ativo && usuario.ClubeId > 0);
+        }
         public void Update(Usuario usuario) => _dbContext.Usuarios.Update(usuario);
     }
 }

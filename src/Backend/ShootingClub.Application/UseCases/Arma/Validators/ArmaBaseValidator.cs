@@ -9,7 +9,10 @@ namespace ShootingClub.Application.UseCases.Arma.Validators
     {
         public ArmaBaseValidator()
         {
-            RuleFor(Usuario => Usuario.Cpf_proprietario).NotEmpty().Must(CpfUtils.ValidCPF).WithMessage(ResourceMessagesException.CPF_INVALIDO);
+            When(usuario => !string.IsNullOrWhiteSpace(usuario.Cpf_proprietario), () =>
+            {
+                RuleFor(Usuario => Usuario.Cpf_proprietario).Must(CpfUtils.ValidCPF!).WithMessage(ResourceMessagesException.CPF_INVALIDO);
+            });
             RuleFor(arma => arma.Tipo).NotEmpty().WithMessage(ResourceMessagesException.TIPO_ARMA_VAZIO);
             RuleFor(arma => arma.Marca).NotEmpty().WithMessage(ResourceMessagesException.MARCA_ARMA_VAZIO);
             RuleFor(arma => arma.NumeroSerie).NotEmpty().WithMessage(ResourceMessagesException.NUMERO_SERIE_ARMA_VAZIO);

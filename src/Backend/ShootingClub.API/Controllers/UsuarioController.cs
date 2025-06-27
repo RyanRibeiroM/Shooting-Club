@@ -14,7 +14,7 @@ namespace ShootingClub.API.Controllers
     {
         [HttpPost]
         [ProducesResponseType(typeof(ResponseRegisteredUsuarioJson), StatusCodes.Status201Created)]
-        // [AuthenticatedAdmin]
+        [AuthenticatedAdminWithClube]
         public async Task<IActionResult> Register(
             [FromServices] IRegisterUsuarioUseCase useCase,
             [FromBody] RequestRegisterUsuarioJson request)

@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ACAO_INVALIDA_CPF_INFORMADO" xml:space="preserve">
+    <value>A ação é inválida para o CPF informado.</value>
+  </data>
   <data name="ADMIN_JA_POSSUI_CLUBE" xml:space="preserve">
     <value>Você já possui um clube registrado.</value>
+  </data>
+  <data name="ADMIN_NAO_POSSUI_CLUBE_CADASTRADO" xml:space="preserve">
+    <value>O Administrador não possui um clube para que possa realizar essa ação.</value>
   </data>
   <data name="CALIBRE_ARMA_INVALIDO" xml:space="preserve">
     <value>O calibre está inválido.</value>
@@ -137,6 +143,9 @@
   </data>
   <data name="CPF_JA_CADASTRADO" xml:space="preserve">
     <value>CPF já registrado.</value>
+  </data>
+  <data name="CPF_USUARIO_INEXISTENTE" xml:space="preserve">
+    <value>Não foi possível encontrar um usuário com esse CPF.</value>
   </data>
   <data name="CR_INVALIDO" xml:space="preserve">
     <value>O formato da CR está inválido.</value>

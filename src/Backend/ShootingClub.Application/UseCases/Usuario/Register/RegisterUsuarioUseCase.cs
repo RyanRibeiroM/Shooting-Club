@@ -7,6 +7,7 @@ using ShootingClub.Domain.Repositories;
 using ShootingClub.Domain.Repositories.Usuario;
 using ShootingClub.Domain.Security.Cryptography;
 using ShootingClub.Domain.Security.Tokens;
+using ShootingClub.Domain.Services.LoggedUsuario;
 using ShootingClub.Exceptions;
 using ShootingClub.Exceptions.ExceptionsBase;
 
@@ -19,7 +20,7 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ISenhaEncripter _passwordEncripter;
-        private readonly IAccessTokenGenerator _accessTokenGenerator;
+        private readonly ILoggedUsuario _loggedUsuario;
 
         public RegisterUsuarioUseCase(
             IUsuarioReadOnlyRepository usuarioReadOnlyRepository,
@@ -27,7 +28,7 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
             IMapper mapper,
             ISenhaEncripter passwordEncripter,
             IUnitOfWork unitOfWork,
-            IAccessTokenGenerator accessTokenGenerator
+            ILoggedUsuario loggedUsuario
             )
         {
             _usuarioReadOnlyRepository = usuarioReadOnlyRepository;
@@ -35,12 +36,13 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
             _mapper = mapper;
             _passwordEncripter = passwordEncripter;
             _unitOfWork = unitOfWork;
-            _accessTokenGenerator = accessTokenGenerator;
+            _loggedUsuario = loggedUsuario;
         }
         public async Task<ResponseRegisteredUsuarioJson> Execute(RequestRegisterUsuarioJson request)
         {
             await Validate(request);
 
+            var loggedUsuario = await _loggedUsuario.Usuario();
             var usuario = _mapper.Map<Domain.Entities.Usuario>(request);
 
             usuario.Senha = _passwordEncripter.Encrypt(request.Senha);
@@ -48,6 +50,7 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
 
             usuario.CPF = CpfUtils.Format(request.CPF);
             usuario.AtualizadoEm = DateTime.UtcNow;
+            usuario.ClubeId = loggedUsuario.ClubeId;
 
             await _usuarioWriteOnlyRepository.Add(usuario);
             await _unitOfWork.Commit();

@@ -2,7 +2,6 @@
 using ShootingClub.Communication.Requests;
 using ShootingClub.Communication.Responses;
 using ShootingClub.Domain.Entities;
-
 namespace ShootingClub.Application.Services.AutoMapper
 {
     public class AutoMapping : Profile
