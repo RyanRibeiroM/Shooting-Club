@@ -17,16 +17,18 @@ namespace ShootingClub.Application.UseCases.Clube.Register
         private readonly ILoggedUsuario _loggedUsuario;
         private readonly IClubeReadOnlyRepository _clubeReadOnlyRepository;
         private readonly IClubeWriteOnlyRepository _clubeWriteOnlyRepository;
+        private readonly IUsuarioUpdateOnlyRepository _usuarioUpdateOnlyRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public RegisterClubeUseCase(ILoggedUsuario loggedUsuario, IClubeReadOnlyRepository clubeReadOnlyRepository, IClubeWriteOnlyRepository clubeWriteOnlyRepository, IUnitOfWork unitOfWork, IMapper mapper)
+        public RegisterClubeUseCase(ILoggedUsuario loggedUsuario, IClubeReadOnlyRepository clubeReadOnlyRepository, IClubeWriteOnlyRepository clubeWriteOnlyRepository, IUnitOfWork unitOfWork, IMapper mapper, IUsuarioUpdateOnlyRepository usuarioUpdateOnlyRepository)
         {
             _loggedUsuario = loggedUsuario;
             _clubeReadOnlyRepository = clubeReadOnlyRepository;
             _clubeWriteOnlyRepository = clubeWriteOnlyRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _usuarioUpdateOnlyRepository = usuarioUpdateOnlyRepository;
         }
 
         public async Task<ResponseRegisteredClubeJson> Execute(RequestRegisterClubeJson request)
@@ -43,6 +45,12 @@ namespace ShootingClub.Application.UseCases.Clube.Register
             clube.AtualizadoEm = DateTime.UtcNow;
 
             await _clubeWriteOnlyRepository.Add(clube);
+
+            loggedUsuario.ClubeId = clube.Id;
+            var usuarioParaAtualizar = await _usuarioUpdateOnlyRepository.GetById(loggedUsuario.Id);
+            usuarioParaAtualizar.ClubeId = clube.Id;
+            _usuarioUpdateOnlyRepository.Update(usuarioParaAtualizar);
+
             await _unitOfWork.Commit();
 
             return new ResponseRegisteredClubeJson { Nome = request.Nome };
