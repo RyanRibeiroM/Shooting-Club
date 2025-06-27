@@ -44,7 +44,7 @@ namespace ShootingClub.Infrastructure.Migrations.Versions
             CreateTable("Armas")
                 .WithColumn("Tipo").AsString(150).NotNullable()
                 .WithColumn("Marca").AsString(150).NotNullable()
-                .WithColumn("Calibre").AsDecimal(8, 4).Nullable()
+                .WithColumn("Calibre").AsString(150).Nullable()
                 .WithColumn("NumeroSerie").AsString(50).NotNullable()
                 .WithColumn("TipoPosse").AsInt32().NotNullable()
                 .WithColumn("UsuarioId").AsInt32().NotNullable()

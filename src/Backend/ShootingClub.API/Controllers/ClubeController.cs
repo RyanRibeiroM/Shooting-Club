@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShootingClub.API.Attributes;
 using ShootingClub.Application.UseCases.Clube.Register;
-using ShootingClub.Application.UseCases.Usuario.Register;
 using ShootingClub.Communication.Requests;
 using ShootingClub.Communication.Responses;
 

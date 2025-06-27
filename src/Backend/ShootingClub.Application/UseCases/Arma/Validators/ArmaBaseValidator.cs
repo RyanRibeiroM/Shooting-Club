@@ -19,9 +19,10 @@ namespace ShootingClub.Application.UseCases.Arma.Validators
             RuleFor(arma => arma.TipoPosse).IsInEnum().WithMessage(ResourceMessagesException.TIPO_POSSE_ARMA_INVALIDO);
 
             RuleFor(arma => arma.Calibre)
-                .GreaterThan(0)
-                .When(arma => arma.Calibre.HasValue && arma.Calibre > 0)
-                .WithMessage(ResourceMessagesException.CALIBRE_ARMA_INVALIDO);
+                .NotEmpty()
+                .Must(calibre => calibre.Any(char.IsDigit))
+                    .WithMessage(ResourceMessagesException.CALIBRE_ARMA_INVALIDO)
+                    .When(arma => !string.IsNullOrWhiteSpace(arma.Calibre));
         }
     }
 }

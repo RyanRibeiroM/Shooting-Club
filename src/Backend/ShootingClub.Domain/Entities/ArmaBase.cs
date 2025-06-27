@@ -2,11 +2,11 @@
 
 namespace ShootingClub.Domain.Entities
 {
-    public class ArmaBase : EntityBase
+    public abstract class ArmaBase : EntityBase
     {
         public string Tipo { get; set; } = string.Empty;
         public string Marca { get; set; } = string.Empty;
-        public decimal? Calibre { get; set; }
+        public string? Calibre { get; set; }
         public string NumeroSerie { get; set; } = string.Empty;
         public TipoPosseArma TipoPosse { get; set; }
         public int UsuarioId { get; set; }

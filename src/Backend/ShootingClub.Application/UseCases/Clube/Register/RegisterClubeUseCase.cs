@@ -45,8 +45,8 @@ namespace ShootingClub.Application.UseCases.Clube.Register
             clube.AtualizadoEm = DateTime.UtcNow;
 
             await _clubeWriteOnlyRepository.Add(clube);
+            await _unitOfWork.Commit();
 
-            loggedUsuario.ClubeId = clube.Id;
             var usuarioParaAtualizar = await _usuarioUpdateOnlyRepository.GetById(loggedUsuario.Id);
             usuarioParaAtualizar.ClubeId = clube.Id;
             _usuarioUpdateOnlyRepository.Update(usuarioParaAtualizar);

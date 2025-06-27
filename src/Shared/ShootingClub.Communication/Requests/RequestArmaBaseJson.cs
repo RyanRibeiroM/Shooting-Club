@@ -14,7 +14,7 @@ namespace ShootingClub.Communication.Requests
         public string? Cpf_proprietario { get; set; }
         public string Tipo { get; set; } = string.Empty;
         public string Marca { get; set; } = string.Empty;
-        public decimal? Calibre { get; set; }
+        public string Calibre { get; set; } = string.Empty;
         public string NumeroSerie { get; set; } = string.Empty;
     }
 }

@@ -39,7 +39,13 @@ namespace ShootingClub.Application.UseCases.Arma.Register
 
             await Validate(request, loggedUsuario.CPF, loggedUsuario.ClubeId);
 
-            var arma = _mapper.Map<ArmaBase>(request);
+            ArmaBase arma = request.TipoPosse switch
+            {
+                TipoPosseArma.Exercito => _mapper.Map<ArmaExercito>((RequestArmaExercitoJson)request),
+                TipoPosseArma.PoliciaFederal => _mapper.Map<ArmaPF>((RequestArmaPFJson)request),
+                TipoPosseArma.PortePessoal => _mapper.Map<ArmaPortePessoal>((RequestArmaPorteJson)request),
+                _ => throw new InvalidOperationException(ResourceMessagesException.TIPO_POSSE_ARMA_INVALIDO),
+            };
 
             if (!string.IsNullOrEmpty(request.Cpf_proprietario))
             {
