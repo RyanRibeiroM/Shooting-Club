@@ -17,16 +17,18 @@ namespace ShootingClub.Application.UseCases.Arma.Register
 {
     public class RegisterArmaUseCase : IRegisterArmaUseCase
     {
-        private readonly IArmaWriteOnlyRepository _repository;
+        private readonly IArmaWriteOnlyRepository _armaWriteOnlyRepository;
+        private readonly IArmaReadOnlyRepository _armaReadOnlyRepository;
         private readonly IUsuarioReadOnlyRepository _usuarioRepository;
         private readonly ILoggedUsuario _loggedUsuario;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
 
-        public RegisterArmaUseCase(IArmaWriteOnlyRepository repository, IUsuarioReadOnlyRepository usuarioRepository, ILoggedUsuario loggedUsuario, IUnitOfWork unitOfWork, IMapper mapper)
+        public RegisterArmaUseCase(IArmaWriteOnlyRepository armaWriteOnlyRepository, IArmaReadOnlyRepository armaReadOnlyRepository, IUsuarioReadOnlyRepository usuarioRepository, ILoggedUsuario loggedUsuario, IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _repository = repository;
+            _armaWriteOnlyRepository = armaWriteOnlyRepository;
+            _armaReadOnlyRepository = armaReadOnlyRepository;
             _loggedUsuario = loggedUsuario;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -57,8 +59,9 @@ namespace ShootingClub.Application.UseCases.Arma.Register
                 arma.ClubeId = loggedUsuario.ClubeId;
 
             arma.AtualizadoEm = DateTime.UtcNow;
+            arma.NumeroSerie = arma.NumeroSerie.ToUpperInvariant();
 
-            await _repository.Add(arma);
+            await _armaWriteOnlyRepository.Add(arma);
             await _unitOfWork.Commit();
 
             return new ResponseRegisteredArmaJson { 
@@ -93,6 +96,11 @@ namespace ShootingClub.Application.UseCases.Arma.Register
                     throw new ErrorOnValidationException([ResourceMessagesException.TIPO_POSSE_ARMA_INVALIDO]);
             }
 
+            bool existNumeroSerie = await _armaReadOnlyRepository.ExistActiveArmaWithNumeroSerie(request.NumeroSerie.ToUpperInvariant());
+            if (existNumeroSerie)
+            {
+                result.Errors.Add(new ValidationFailure(string.Empty, ResourceMessagesException.NUMERO_SERIE_JA_REGISTRADO));
+            }
             if(!string.IsNullOrEmpty(request.Cpf_proprietario) && CpfUtils.ValidCPF(request.Cpf_proprietario))
             {
                 var cpf_proprietario = CpfUtils.Format(request.Cpf_proprietario);

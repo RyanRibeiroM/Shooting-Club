@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ShootingClub.Communication.Requests;
 using ShootingClub.Communication.Responses;
+using ShootingClub.Domain.Repositories.Arma;
 using ShootingClub.Domain.Services.LoggedUsuario;
 using ShootingClub.Exceptions.ExceptionsBase;
 using System;
@@ -15,16 +16,31 @@ namespace ShootingClub.Application.UseCases.Arma.Filter
     {
         private readonly IMapper _mapper;
         private readonly ILoggedUsuario _loggedUsuario;
-        public FilterArmaUseCase(IMapper mapper, ILoggedUsuario loggedUsuario)
+        private readonly IArmaReadOnlyRepository _armaReadOnlyRepository;
+        public FilterArmaUseCase(IMapper mapper, ILoggedUsuario loggedUsuario, IArmaReadOnlyRepository armaReadOnlyRepository)
         {
             _mapper = mapper;
             _loggedUsuario = loggedUsuario;
+            _armaReadOnlyRepository = armaReadOnlyRepository;
         }
         public async Task<ResponseArmasJson> Execute(RequestFilterArmaJson request)
         {
             Validate(request);
             var loggedUser = await _loggedUsuario.Usuario();
-            return new ResponseArmasJson { Armas = [] };
+
+            var filters = new Domain.Dtos.FilterArmasDto 
+            {
+                TipoPosse = (Domain.Enums.TipoPosseArma?)request.TipoPosse,
+                Tipo = request.Tipo,
+                Marca = request.Marca,
+                NumeroSerie = request.NumeroSerie,
+                ProximoExpiracao = request.ProximoExpiracao,
+                SoArmasDoClube = request.SoArmasDoClube,
+                IdUsuario = request.IdUsuario
+            };
+            var armas = await _armaReadOnlyRepository.Filter(loggedUser, filters);
+
+            return new ResponseArmasJson { Armas = _mapper.Map<List<ResponseShortArmaJson>>(armas) };
            
         }
 

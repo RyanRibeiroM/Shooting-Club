@@ -439,6 +439,15 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O número de série já foi registrado..
+        /// </summary>
+        public static string NUMERO_SERIE_JA_REGISTRADO {
+            get {
+                return ResourceManager.GetString("NUMERO_SERIE_JA_REGISTRADO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O número de SIGMA está inválido..
         /// </summary>
         public static string NUMERO_SIGMA_INVALIDO {

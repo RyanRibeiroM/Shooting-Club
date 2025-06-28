@@ -1,6 +1,7 @@
 ﻿using ShootingClub.API.Converters;
 using ShootingClub.Communication.Enums;
 using ShootingClub.Communication.Requests;
+using ShootingClub.Communication.Responses;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
@@ -33,6 +34,21 @@ namespace ShootingClub.API.Configuration
                                     new JsonDerivedType(typeof(RequestArmaPorteJson), (int)TipoPosseArma.PortePessoal)
                                 }
                             };
+                        }
+
+                        if (typeInfo.Type == typeof(ResponseShortArmaJson))
+                        {
+                                typeInfo.PolymorphismOptions = new JsonPolymorphismOptions
+                                {
+                                    TypeDiscriminatorPropertyName = "tipoPosse",
+                                    UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization,
+                                    DerivedTypes =
+                                    {
+                                        new JsonDerivedType(typeof(ResponseArmaExercitoShortJson), ((int)TipoPosseArma.Exercito).ToString()),
+                                        new JsonDerivedType(typeof(ResponseArmaPFShortJson), ((int)TipoPosseArma.PoliciaFederal).ToString()),
+                                        new JsonDerivedType(typeof(ResponseArmaPorteShortJson), ((int)TipoPosseArma.PortePessoal).ToString())
+                                    }
+                                };
                         }
                     }
                 }

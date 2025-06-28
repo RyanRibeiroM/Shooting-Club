@@ -243,6 +243,9 @@
   <data name="NUMERO_SERIE_ARMA_VAZIO" xml:space="preserve">
     <value>O número de série está vazio.</value>
   </data>
+  <data name="NUMERO_SERIE_JA_REGISTRADO" xml:space="preserve">
+    <value>O número de série já foi registrado.</value>
+  </data>
   <data name="NUMERO_SIGMA_INVALIDO" xml:space="preserve">
     <value>O número de SIGMA está inválido.</value>
   </data>
