@@ -2,6 +2,6 @@
 {
     public class ResponseArmasJson
     {
-        public IList<ResponseShortArmaJson> Armas { get; set; } = [];
+        public IList<ResponseArmaShortJson> Armas { get; set; } = [];
     }
 }

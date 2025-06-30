@@ -91,5 +91,29 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
 
             return await query.ToListAsync();
         }
+
+        public async Task<ArmaBase?> GetById(Usuario usuario, int armaId)
+        {
+            var query = _dbContext.Armas.AsNoTracking();
+
+            if (usuario.Nivel == NivelUsuario.AdminUsuario)
+            {
+                var armasDeMembrosDoClube =
+                    from arma in query
+                    join user in _dbContext.Usuarios on arma.UsuarioId equals user.Id
+                    where user.ClubeId == usuario.ClubeId
+                    select arma;
+
+                var armasDoClube = query.Where(arma => arma.ClubeId == usuario.ClubeId && arma.UsuarioId == 0);
+
+                query = armasDeMembrosDoClube.Union(armasDoClube);
+            }
+            else
+            {
+                query = query.Where(arma => arma.UsuarioId == usuario.Id);
+            }
+
+            return await query.FirstOrDefaultAsync(arma => arma.Id == armaId && arma.Ativo);
+        }
     }
 }

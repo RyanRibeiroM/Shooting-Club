@@ -88,6 +88,15 @@ namespace ShootingClub.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Nenhuma arma foi encontrada..
+        /// </summary>
+        public static string ARMA_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("ARMA_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O calibre está inválido..
         /// </summary>
         public static string CALIBRE_ARMA_INVALIDO {

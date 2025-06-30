@@ -35,8 +35,7 @@ namespace ShootingClub.API.Configuration
                                 }
                             };
                         }
-
-                        if (typeInfo.Type == typeof(ResponseShortArmaJson))
+                        else if (typeInfo.Type == typeof(ResponseArmaShortJson))
                         {
                                 typeInfo.PolymorphismOptions = new JsonPolymorphismOptions
                                 {
@@ -46,7 +45,21 @@ namespace ShootingClub.API.Configuration
                                     {
                                         new JsonDerivedType(typeof(ResponseArmaExercitoShortJson), ((int)TipoPosseArma.Exercito).ToString()),
                                         new JsonDerivedType(typeof(ResponseArmaPFShortJson), ((int)TipoPosseArma.PoliciaFederal).ToString()),
-                                        new JsonDerivedType(typeof(ResponseArmaPorteShortJson), ((int)TipoPosseArma.PortePessoal).ToString())
+                                        new JsonDerivedType(typeof(ResponseArmaPortePessoalShortJson), ((int)TipoPosseArma.PortePessoal).ToString())
+                                    }
+                                };
+                        }
+                        else if (typeInfo.Type == typeof(ResponseArmaBaseJson))
+                        {
+                                typeInfo.PolymorphismOptions = new JsonPolymorphismOptions
+                                {
+                                    TypeDiscriminatorPropertyName = "tipoPosse",
+                                    UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization,
+                                    DerivedTypes =
+                                    {
+                                        new JsonDerivedType(typeof(ResponseArmaExercitoJson), ((int)TipoPosseArma.Exercito).ToString()),
+                                        new JsonDerivedType(typeof(ResponseArmaPFJson), ((int)TipoPosseArma.PoliciaFederal).ToString()),
+                                        new JsonDerivedType(typeof(ResponseArmaPortePessoalJson), ((int)TipoPosseArma.PortePessoal).ToString())
                                     }
                                 };
                         }

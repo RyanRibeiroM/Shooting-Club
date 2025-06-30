@@ -36,15 +36,25 @@ namespace ShootingClub.Application.Services.AutoMapper
         {
             CreateMap<Usuario, ResponseUsuarioProfileJson>();
 
-            CreateMap<ArmaBase, ResponseShortArmaJson>()
+            CreateMap<ArmaBase, ResponseArmaShortJson>()
                 .ForMember(dest => dest.TipoPosse, opt => opt.MapFrom(src => src.TipoPosse))
                 .Include<ArmaExercito, ResponseArmaExercitoShortJson>()
                 .Include<ArmaPF, ResponseArmaPFShortJson>()
-                .Include<ArmaPortePessoal, ResponseArmaPorteShortJson>();
+                .Include<ArmaPortePessoal, ResponseArmaPortePessoalShortJson>();
 
             CreateMap<ArmaExercito, ResponseArmaExercitoShortJson>();
             CreateMap<ArmaPF, ResponseArmaPFShortJson>();
-            CreateMap<ArmaPortePessoal, ResponseArmaPorteShortJson>();
+            CreateMap<ArmaPortePessoal, ResponseArmaPortePessoalShortJson>();
+
+            CreateMap<ArmaBase, ResponseArmaBaseJson>()
+                .ForMember(dest => dest.TipoPosse, opt => opt.MapFrom(src => src.TipoPosse))
+                .Include<ArmaExercito, ResponseArmaExercitoJson>()
+                .Include<ArmaPF, ResponseArmaPFJson>()
+                .Include<ArmaPortePessoal, ResponseArmaPortePessoalJson>();
+
+            CreateMap<ArmaExercito, ResponseArmaExercitoJson>();
+            CreateMap<ArmaPF, ResponseArmaPFJson>();
+            CreateMap<ArmaPortePessoal, ResponseArmaPortePessoalJson>();
         }
     }
 }

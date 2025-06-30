@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace ShootingClub.Communication.Responses
 {
-    public abstract class ResponseShortArmaJson
+    public abstract class ResponseArmaBaseJson
     {
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public TipoPosseArma TipoPosse { get; set; }

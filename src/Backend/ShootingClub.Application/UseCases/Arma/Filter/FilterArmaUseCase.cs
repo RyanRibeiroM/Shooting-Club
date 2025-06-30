@@ -40,7 +40,7 @@ namespace ShootingClub.Application.UseCases.Arma.Filter
             };
             var armas = await _armaReadOnlyRepository.Filter(loggedUser, filters);
 
-            return new ResponseArmasJson { Armas = _mapper.Map<List<ResponseShortArmaJson>>(armas) };
+            return new ResponseArmasJson { Armas = _mapper.Map<List<ResponseArmaShortJson>>(armas) };
            
         }
 

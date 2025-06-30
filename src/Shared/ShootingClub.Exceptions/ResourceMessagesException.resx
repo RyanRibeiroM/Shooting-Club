@@ -126,6 +126,9 @@
   <data name="ADMIN_NAO_POSSUI_CLUBE_CADASTRADO" xml:space="preserve">
     <value>O Administrador não possui um clube para que possa realizar essa ação.</value>
   </data>
+  <data name="ARMA_NOT_FOUND" xml:space="preserve">
+    <value>Nenhuma arma foi encontrada.</value>
+  </data>
   <data name="CALIBRE_ARMA_INVALIDO" xml:space="preserve">
     <value>O calibre está inválido.</value>
   </data>

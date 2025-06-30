@@ -14,8 +14,8 @@ namespace ShootingClub.API.Filters
         {
             if (context.Exception is ShootingClubException)
                 HandleProjectException(context);
-            //else
-            //    ThrowUnknowExcept(context);
+            else
+                ThrowUnknowExcept(context);
         }
         private static void HandleProjectException(ExceptionContext context)
         {
@@ -29,6 +29,11 @@ namespace ShootingClub.API.Filters
                 var exception = context.Exception as ErrorOnValidationException;
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 context.Result = new BadRequestObjectResult(new ResponseErrorJson(exception!.ErrorMessages));
+            }
+            else if (context.Exception is NotFoundException)
+            {
+                context.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                context.Result = new BadRequestObjectResult(new ResponseErrorJson(context.Exception.Message));
             }
         }
 

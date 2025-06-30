@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShootingClub.API.Attributes;
 using ShootingClub.Application.UseCases.Arma.Filter;
+using ShootingClub.Application.UseCases.Arma.GetById;
 using ShootingClub.Application.UseCases.Arma.Register;
 using ShootingClub.Communication.Requests;
 using ShootingClub.Communication.Responses;
@@ -35,6 +36,20 @@ namespace ShootingClub.API.Controllers
                 return Ok(response);
 
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(ResponseArmaBaseJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+        [AuthenticatedUsuario]
+        public async Task<IActionResult> GetById(
+            [FromServices] IGetArmaByIdUseCase useCase,
+            [FromRoute] int id)
+        {
+            var response = await useCase.Execute(id);
+
+            return Ok(response);
         }
     }
 }

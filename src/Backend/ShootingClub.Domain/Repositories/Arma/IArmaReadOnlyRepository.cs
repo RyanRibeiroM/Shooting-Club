@@ -6,6 +6,8 @@ namespace ShootingClub.Domain.Repositories.Arma
     {
         Task<bool> ExistActiveArmaWithNumeroSerie(string numeroSerie);
         Task<IList<Entities.ArmaBase>> Filter(Entities.Usuario usuario, FilterArmasDto filters);
+
+        Task<Entities.ArmaBase?> GetById(Entities.Usuario usuario, int armaId);
         
     }
 }

@@ -1,18 +1,13 @@
 using Microsoft.OpenApi.Models;
 using ShootingClub.API.Configuration;
-using ShootingClub.API.Converters;
 using ShootingClub.API.Filters;
 using ShootingClub.API.Middleware;
 using ShootingClub.API.Token;
 using ShootingClub.Application;
-using ShootingClub.Communication.Enums;
-using ShootingClub.Communication.Requests;
 using ShootingClub.Domain.Security.Tokens;
 using ShootingClub.Infrastructure;
 using ShootingClub.Infrastructure.Extensions;
 using ShootingClub.Infrastructure.Migrations;
-using System.Text.Json.Serialization;
-using System.Text.Json.Serialization.Metadata;
 
 const string CORSSpecifcOrigins = "_myAllowSpecificOrigins";
 
