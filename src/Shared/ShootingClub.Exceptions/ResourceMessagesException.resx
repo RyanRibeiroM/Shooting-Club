@@ -282,6 +282,9 @@
   <data name="TIPO_POSSE_ARMA_INVALIDO" xml:space="preserve">
     <value>O tipo da posse da arma é inválido.</value>
   </data>
+  <data name="TIPO_POSSE_NAO_PODE_SER_ALTERADO" xml:space="preserve">
+    <value>O tipo de possse da arma não pode ser alterado.</value>
+  </data>
   <data name="USUARIO_SEM_PERMISSAO_PARA_ACESSAR_RECURSO" xml:space="preserve">
     <value>O usuário não tem permissão para acessar esse recurso.</value>
   </data>

@@ -18,53 +18,59 @@ namespace ShootingClub.API.Configuration
                 options.JsonSerializerOptions.TypeInfoResolver = new DefaultJsonTypeInfoResolver
                 {
                     Modifiers =
-                {
-                    static typeInfo =>
                     {
-                        if (typeInfo.Type == typeof(RequestArmaBaseJson))
+                        static typeInfo =>
                         {
-                            typeInfo.PolymorphismOptions = new JsonPolymorphismOptions
+                            // Configuração para DESERIALIZAÇÃO (Request)
+                            // Garante que a API saiba como ler o JSON de uma nova arma
+                            if (typeInfo.Type == typeof(RequestArmaBaseJson))
                             {
-                                TypeDiscriminatorPropertyName = "tipoPosse",
-                                UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization,
-                                DerivedTypes =
-                                {
-                                    new JsonDerivedType(typeof(RequestArmaExercitoJson), (int)TipoPosseArma.Exercito),
-                                    new JsonDerivedType(typeof(RequestArmaPFJson), (int)TipoPosseArma.PoliciaFederal),
-                                    new JsonDerivedType(typeof(RequestArmaPorteJson), (int)TipoPosseArma.PortePessoal)
-                                }
-                            };
-                        }
-                        else if (typeInfo.Type == typeof(ResponseArmaShortJson))
-                        {
                                 typeInfo.PolymorphismOptions = new JsonPolymorphismOptions
                                 {
                                     TypeDiscriminatorPropertyName = "tipoPosse",
                                     UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization,
                                     DerivedTypes =
                                     {
-                                        new JsonDerivedType(typeof(ResponseArmaExercitoShortJson), ((int)TipoPosseArma.Exercito).ToString()),
-                                        new JsonDerivedType(typeof(ResponseArmaPFShortJson), ((int)TipoPosseArma.PoliciaFederal).ToString()),
-                                        new JsonDerivedType(typeof(ResponseArmaPortePessoalShortJson), ((int)TipoPosseArma.PortePessoal).ToString())
+                                        new JsonDerivedType(typeof(RequestArmaExercitoJson), (int)TipoPosseArma.Exercito),
+                                        new JsonDerivedType(typeof(RequestArmaPFJson), (int)TipoPosseArma.PoliciaFederal),
+                                        new JsonDerivedType(typeof(RequestArmaPorteJson), (int)TipoPosseArma.PortePessoal)
                                     }
                                 };
-                        }
-                        else if (typeInfo.Type == typeof(ResponseArmaBaseJson))
-                        {
+                            }
+                            // Configuração para SERIALIZAÇÃO (Response Curta)
+                            // Garante que a API saiba como montar o JSON para listas de armas
+                            else if (typeInfo.Type == typeof(ResponseArmaShortJson))
+                            {
                                 typeInfo.PolymorphismOptions = new JsonPolymorphismOptions
                                 {
                                     TypeDiscriminatorPropertyName = "tipoPosse",
                                     UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization,
                                     DerivedTypes =
                                     {
-                                        new JsonDerivedType(typeof(ResponseArmaExercitoJson), ((int)TipoPosseArma.Exercito).ToString()),
-                                        new JsonDerivedType(typeof(ResponseArmaPFJson), ((int)TipoPosseArma.PoliciaFederal).ToString()),
-                                        new JsonDerivedType(typeof(ResponseArmaPortePessoalJson), ((int)TipoPosseArma.PortePessoal).ToString())
+                                        new JsonDerivedType(typeof(ResponseArmaExercitoShortJson), TipoPosseArma.Exercito.ToString()),
+                                        new JsonDerivedType(typeof(ResponseArmaPFShortJson), TipoPosseArma.PoliciaFederal.ToString()),
+                                        new JsonDerivedType(typeof(ResponseArmaPortePessoalShortJson), TipoPosseArma.PortePessoal.ToString())
                                     }
                                 };
+                            }
+                            // Configuração para SERIALIZAÇÃO (Response Completa)
+                            // Garante que a API saiba como montar o JSON para detalhes de uma arma
+                            else if (typeInfo.Type == typeof(ResponseArmaBaseJson))
+                            {
+                                typeInfo.PolymorphismOptions = new JsonPolymorphismOptions
+                                {
+                                    TypeDiscriminatorPropertyName = "tipoPosse",
+                                    UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization,
+                                    DerivedTypes =
+                                    {
+                                        new JsonDerivedType(typeof(ResponseArmaExercitoJson), TipoPosseArma.Exercito.ToString()),
+                                        new JsonDerivedType(typeof(ResponseArmaPFJson), TipoPosseArma.PoliciaFederal.ToString()),
+                                        new JsonDerivedType(typeof(ResponseArmaPortePessoalJson), TipoPosseArma.PortePessoal.ToString())
+                                    }
+                                };
+                            }
                         }
                     }
-                }
                 };
             });
 

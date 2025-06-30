@@ -4,7 +4,6 @@ using ShootingClub.Application.UseCases.Arma.Validators;
 using ShootingClub.Application.Utils;
 using ShootingClub.Communication.Enums;
 using ShootingClub.Communication.Requests;
-using ShootingClub.Domain.Entities;
 using ShootingClub.Domain.Repositories;
 using ShootingClub.Domain.Repositories.Arma;
 using ShootingClub.Domain.Repositories.Usuario;
@@ -16,7 +15,6 @@ namespace ShootingClub.Application.UseCases.Arma.Update
 {
     public class UpdateArmaUseCase : IUpdateArmaUseCase
     {
-
         private readonly IArmaUpdateOnlyRepository _updateOnlyRepository;
         private readonly IArmaReadOnlyRepository _armaReadOnlyRepository;
         private readonly IUsuarioReadOnlyRepository _usuarioRepository;
@@ -24,8 +22,13 @@ namespace ShootingClub.Application.UseCases.Arma.Update
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-
-        public UpdateArmaUseCase(IArmaUpdateOnlyRepository updateOnlyRepository, IArmaReadOnlyRepository armaReadOnlyRepository, IUsuarioReadOnlyRepository usuarioRepository, ILoggedUsuario loggedUsuario, IUnitOfWork unitOfWork, IMapper mapper)
+        public UpdateArmaUseCase(
+            IArmaUpdateOnlyRepository updateOnlyRepository,
+            IArmaReadOnlyRepository armaReadOnlyRepository,
+            IUsuarioReadOnlyRepository usuarioRepository,
+            ILoggedUsuario loggedUsuario,
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
         {
             _updateOnlyRepository = updateOnlyRepository;
             _armaReadOnlyRepository = armaReadOnlyRepository;
@@ -34,37 +37,34 @@ namespace ShootingClub.Application.UseCases.Arma.Update
             _mapper = mapper;
             _usuarioRepository = usuarioRepository;
         }
-        public async Task Execute(int ArmaId, RequestArmaBaseJson request)
+
+        public async Task Execute(int armaId, RequestArmaBaseJson request)
         {
             var loggedUsuario = await _loggedUsuario.Usuario();
 
-            await Validate(request, loggedUsuario.CPF, loggedUsuario.ClubeId, ArmaId);
+            await Validate(request, loggedUsuario.CPF, loggedUsuario.ClubeId, armaId);
 
-            var arma = await _updateOnlyRepository.GetById(loggedUsuario, ArmaId);
+            var arma = await _updateOnlyRepository.GetById(loggedUsuario, armaId);
 
             if (arma is null)
                 throw new NotFoundException(ResourceMessagesException.ARMA_NOT_FOUND);
 
-            if ((int)arma.TipoPosse == (int)request.TipoPosse)
-            {
-                _mapper.Map(request, arma);
-            }
-            else
-            {
-                HandleTypeChange(request, arma);
-            }
+            if (arma.TipoPosse != (Domain.Enums.TipoPosseArma)request.TipoPosse)
+                throw new ErrorOnValidationException([ResourceMessagesException.TIPO_POSSE_NAO_PODE_SER_ALTERADO]);
 
-            if (!string.IsNullOrEmpty(request.Cpf_proprietario))
+            _mapper.Map(request, arma);
+
+            if (!string.IsNullOrWhiteSpace(request.Cpf_proprietario))
             {
-                var cpf_proprietario = CpfUtils.Format(request.Cpf_proprietario);
-                int id_proprietario = await _usuarioRepository.GetIdUsuarioByCPF(cpf_proprietario);
-                arma.UsuarioId = id_proprietario;
+                var cpfProprietario = CpfUtils.Format(request.Cpf_proprietario);
+                var idProprietario = await _usuarioRepository.GetIdUsuarioByCPF(cpfProprietario);
+                arma.UsuarioId = idProprietario;
                 arma.ClubeId = 0;
             }
             else
             {
-                arma.ClubeId = loggedUsuario.ClubeId;
                 arma.UsuarioId = 0;
+                arma.ClubeId = loggedUsuario.ClubeId;
             }
 
             arma.AtualizadoEm = DateTime.UtcNow;
@@ -72,35 +72,6 @@ namespace ShootingClub.Application.UseCases.Arma.Update
 
             _updateOnlyRepository.Update(arma);
             await _unitOfWork.Commit();
-        }
-
-
-        private void HandleTypeChange(RequestArmaBaseJson request, ArmaBase arma)
-        {
-            switch (arma)
-            {
-                case ArmaExercito armaExercito:
-                    armaExercito.NumeroSigma = null;
-                    armaExercito.LocalRegistro = null;
-                    armaExercito.DataExpedicaoCRAF = null;
-                    armaExercito.ValidadeCRAF = null;
-                    armaExercito.NumeroGTE = null;
-                    armaExercito.ValidadeGTE = null;
-                    break;
-                case ArmaPF armaPF:
-                    armaPF.DataValidadePF = null;
-                    armaPF.NumeroSinarm = null;
-                    armaPF.NumeroNotaFiscal = null;
-                    break;
-                case ArmaPortePessoal armaPorte:
-                    armaPorte.ValidadeCertificacao = null;
-                    armaPorte.NumeroCertificado = null;
-                    break;
-            }
-
-            _mapper.Map(request, arma);
-
-            arma.TipoPosse = (Domain.Enums.TipoPosseArma)request.TipoPosse;
         }
 
         private async Task Validate(RequestArmaBaseJson request, string cpf_loggedUsuario, int clubeId_loggedUsuario, int armaId)
@@ -127,20 +98,20 @@ namespace ShootingClub.Application.UseCases.Arma.Update
                     throw new ErrorOnValidationException([ResourceMessagesException.TIPO_POSSE_ARMA_INVALIDO]);
             }
 
-            bool existNumeroSerie = await _updateOnlyRepository.ExistActiveArmaWithNumeroSerieAndIgnoreId(request.NumeroSerie.ToUpperInvariant(), armaId);
-            if (existNumeroSerie)
+            if (await _updateOnlyRepository.ExistActiveArmaWithNumeroSerieAndIgnoreId(request.NumeroSerie.ToUpperInvariant(), armaId))
             {
-                result.Errors.Add(new ValidationFailure(string.Empty, ResourceMessagesException.NUMERO_SERIE_JA_REGISTRADO));
+                result.Errors.Add(new ValidationFailure(nameof(request.NumeroSerie), ResourceMessagesException.NUMERO_SERIE_JA_REGISTRADO));
             }
-            if (!string.IsNullOrEmpty(request.Cpf_proprietario) && CpfUtils.ValidCPF(request.Cpf_proprietario))
-            {
-                var cpf_proprietario = CpfUtils.Format(request.Cpf_proprietario);
-                bool existClubeAndCPF = await _usuarioRepository.ExistActiveUsuarioWithClubeAndCPF(clubeId_loggedUsuario, cpf_proprietario);
 
-                if (!existClubeAndCPF)
-                    result.Errors.Add(new ValidationFailure(string.Empty, ResourceMessagesException.CPF_USUARIO_INEXISTENTE));
-                if (cpf_loggedUsuario.Equals(request.Cpf_proprietario))
-                    result.Errors.Add(new ValidationFailure(string.Empty, ResourceMessagesException.ACAO_INVALIDA_CPF_INFORMADO));
+            if (!string.IsNullOrWhiteSpace(request.Cpf_proprietario) && CpfUtils.ValidCPF(request.Cpf_proprietario))
+            {
+                var cpfProprietario = CpfUtils.Format(request.Cpf_proprietario);
+
+                if (cpf_loggedUsuario.Equals(cpfProprietario))
+                    result.Errors.Add(new ValidationFailure(nameof(request.Cpf_proprietario), ResourceMessagesException.ACAO_INVALIDA_CPF_INFORMADO));
+
+                if (!await _usuarioRepository.ExistActiveUsuarioWithClubeAndCPF(clubeId_loggedUsuario, cpfProprietario))
+                    result.Errors.Add(new ValidationFailure(nameof(request.Cpf_proprietario), ResourceMessagesException.CPF_USUARIO_INEXISTENTE));
             }
 
             if (result is not null && !result.IsValid)

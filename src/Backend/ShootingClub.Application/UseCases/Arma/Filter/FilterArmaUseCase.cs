@@ -33,6 +33,7 @@ namespace ShootingClub.Application.UseCases.Arma.Filter
                 TipoPosse = (Domain.Enums.TipoPosseArma?)request.TipoPosse,
                 Tipo = request.Tipo,
                 Marca = request.Marca,
+                Calibre = request.Calibre,
                 NumeroSerie = request.NumeroSerie,
                 ProximoExpiracao = request.ProximoExpiracao,
                 SoArmasDoClube = request.SoArmasDoClube,

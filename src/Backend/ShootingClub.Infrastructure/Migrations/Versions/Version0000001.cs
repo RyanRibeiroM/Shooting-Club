@@ -44,27 +44,30 @@ namespace ShootingClub.Infrastructure.Migrations.Versions
             CreateTable("Armas")
                 .WithColumn("Tipo").AsString(150).NotNullable()
                 .WithColumn("Marca").AsString(150).NotNullable()
-                .WithColumn("Calibre").AsString(150).Nullable()
+                .WithColumn("Calibre").AsString(150).NotNullable()
                 .WithColumn("NumeroSerie").AsString(50).NotNullable()
-                .WithColumn("TipoPosse").AsInt32().NotNullable()
+                .WithColumn("TipoPosse").AsInt32().NotNullable() 
                 .WithColumn("UsuarioId").AsInt32().NotNullable()
-                .WithColumn("ClubeId").AsInt32().NotNullable()
+                .WithColumn("ClubeId").AsInt32().NotNullable();
 
-                .WithColumn("NumeroSigma").AsString(50).Nullable()
-                .WithColumn("DataExpedicaoCRAF").AsDate().Nullable()
-                .WithColumn("ValidadeCRAF").AsDate().Nullable()
-                .WithColumn("LocalRegistro").AsString(100).Nullable()
-                .WithColumn("NumeroGTE").AsString(100).Nullable()
-                .WithColumn("ValidadeGTE").AsDate().Nullable()
-                .WithColumn("NumeroSinarm").AsString(100).Nullable()
+            CreateTptChildTable("ArmasExercito", "Armas")
+                .WithColumn("NumeroSigma").AsString(50).NotNullable()
+                .WithColumn("DataExpedicaoCRAF").AsDate().NotNullable()
+                .WithColumn("ValidadeCRAF").AsDate().NotNullable()
+                .WithColumn("LocalRegistro").AsString(100).NotNullable()
+                .WithColumn("NumeroGTE").AsString(100).NotNullable()
+                .WithColumn("ValidadeGTE").AsDate().NotNullable();
 
-                .WithColumn("NumeroRegistroPF").AsString(100).Nullable()
-                .WithColumn("NumeroNotaFiscal").AsString(100).Nullable()
-                .WithColumn("DataValidadePF").AsDate().Nullable()
+            CreateTptChildTable("ArmasPoliciaFederal", "Armas")
+                .WithColumn("NumeroSinarm").AsString(100).NotNullable()
+                .WithColumn("NumeroRegistroPF").AsString(100).NotNullable()
+                .WithColumn("NumeroNotaFiscal").AsString(100).NotNullable()
+                .WithColumn("DataValidadePF").AsDate().NotNullable();
 
-                .WithColumn("NumeroCertificado").AsString(50).Nullable()
-                .WithColumn("DataCertificacao").AsDate().Nullable()
-                .WithColumn("ValidadeCertificacao").AsDate().Nullable();
+            CreateTptChildTable("ArmasPortePessoal", "Armas")
+                .WithColumn("NumeroCertificado").AsString(50).NotNullable()
+                .WithColumn("DataCertificacao").AsDate().NotNullable()
+                .WithColumn("ValidadeCertificacao").AsDate().NotNullable();
 
             CreateTable("Emprestimos")
                 .WithColumn("Status").AsInt32().NotNullable()

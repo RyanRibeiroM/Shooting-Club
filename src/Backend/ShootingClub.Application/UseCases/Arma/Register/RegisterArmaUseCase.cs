@@ -24,8 +24,13 @@ namespace ShootingClub.Application.UseCases.Arma.Register
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-
-        public RegisterArmaUseCase(IArmaWriteOnlyRepository armaWriteOnlyRepository, IArmaReadOnlyRepository armaReadOnlyRepository, IUsuarioReadOnlyRepository usuarioRepository, ILoggedUsuario loggedUsuario, IUnitOfWork unitOfWork, IMapper mapper)
+        public RegisterArmaUseCase(
+            IArmaWriteOnlyRepository armaWriteOnlyRepository,
+            IArmaReadOnlyRepository armaReadOnlyRepository,
+            IUsuarioReadOnlyRepository usuarioRepository,
+            ILoggedUsuario loggedUsuario,
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
         {
             _armaWriteOnlyRepository = armaWriteOnlyRepository;
             _armaReadOnlyRepository = armaReadOnlyRepository;
@@ -41,21 +46,14 @@ namespace ShootingClub.Application.UseCases.Arma.Register
 
             await Validate(request, loggedUsuario.CPF, loggedUsuario.ClubeId);
 
-            ArmaBase arma = request.TipoPosse switch
-            {
-                TipoPosseArma.Exercito => _mapper.Map<ArmaExercito>((RequestArmaExercitoJson)request),
-                TipoPosseArma.PoliciaFederal => _mapper.Map<ArmaPF>((RequestArmaPFJson)request),
-                TipoPosseArma.PortePessoal => _mapper.Map<ArmaPortePessoal>((RequestArmaPorteJson)request),
-                _ => throw new InvalidOperationException(ResourceMessagesException.TIPO_POSSE_ARMA_INVALIDO),
-            };
+            var arma = _mapper.Map<ArmaBase>(request);
 
-            if (!string.IsNullOrEmpty(request.Cpf_proprietario))
+            if (!string.IsNullOrWhiteSpace(request.Cpf_proprietario))
             {
-                var cpf_proprietario = CpfUtils.Format(request.Cpf_proprietario);
-                int id_proprietario = await _usuarioRepository.GetIdUsuarioByCPF(cpf_proprietario);
-                arma.UsuarioId = id_proprietario;
-            }
-            else
+                var cpfProprietario = CpfUtils.Format(request.Cpf_proprietario);
+                var idProprietario = await _usuarioRepository.GetIdUsuarioByCPF(cpfProprietario);
+                arma.UsuarioId = idProprietario;
+            }else
                 arma.ClubeId = loggedUsuario.ClubeId;
 
             arma.AtualizadoEm = DateTime.UtcNow;
@@ -64,15 +62,11 @@ namespace ShootingClub.Application.UseCases.Arma.Register
             await _armaWriteOnlyRepository.Add(arma);
             await _unitOfWork.Commit();
 
-            return new ResponseRegisteredArmaJson { 
-                Tipo = request.Tipo,
-                Marca = request.Marca,
-                NumeroSerie = request.NumeroSerie
-            };
-
+            return _mapper.Map<ResponseRegisteredArmaJson>(arma);
         }
 
         private async Task Validate(RequestArmaBaseJson request, string cpf_loggedUsuario, int clubeId_loggedUsuario)
+
         {
             ValidationResult? result = null;
             switch (request.TipoPosse)
@@ -101,14 +95,15 @@ namespace ShootingClub.Application.UseCases.Arma.Register
             {
                 result.Errors.Add(new ValidationFailure(string.Empty, ResourceMessagesException.NUMERO_SERIE_JA_REGISTRADO));
             }
-            if(!string.IsNullOrEmpty(request.Cpf_proprietario) && CpfUtils.ValidCPF(request.Cpf_proprietario))
+            if (!string.IsNullOrEmpty(request.Cpf_proprietario) && CpfUtils.ValidCPF(request.Cpf_proprietario))
             {
                 var cpf_proprietario = CpfUtils.Format(request.Cpf_proprietario);
                 bool existClubeAndCPF = await _usuarioRepository.ExistActiveUsuarioWithClubeAndCPF(clubeId_loggedUsuario, cpf_proprietario);
 
                 if (!existClubeAndCPF)
                     result.Errors.Add(new ValidationFailure(string.Empty, ResourceMessagesException.CPF_USUARIO_INEXISTENTE));
-                if(cpf_loggedUsuario.Equals(request.Cpf_proprietario)) 
+
+                if (cpf_loggedUsuario.Equals(request.Cpf_proprietario))
                     result.Errors.Add(new ValidationFailure(string.Empty, ResourceMessagesException.ACAO_INVALIDA_CPF_INFORMADO));
             }
 

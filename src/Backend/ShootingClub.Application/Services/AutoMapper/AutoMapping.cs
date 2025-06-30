@@ -2,6 +2,7 @@
 using ShootingClub.Communication.Requests;
 using ShootingClub.Communication.Responses;
 using ShootingClub.Domain.Entities;
+
 namespace ShootingClub.Application.Services.AutoMapper
 {
     public class AutoMapping : Profile
@@ -29,32 +30,32 @@ namespace ShootingClub.Application.Services.AutoMapper
             CreateMap<RequestArmaExercitoJson, ArmaExercito>();
             CreateMap<RequestArmaPFJson, ArmaPF>();
             CreateMap<RequestArmaPorteJson, ArmaPortePessoal>();
-
         }
 
         private void DomainToResponse()
         {
             CreateMap<Usuario, ResponseUsuarioProfileJson>();
-
-            CreateMap<ArmaBase, ResponseArmaShortJson>()
-                .ForMember(dest => dest.TipoPosse, opt => opt.MapFrom(src => src.TipoPosse))
-                .Include<ArmaExercito, ResponseArmaExercitoShortJson>()
-                .Include<ArmaPF, ResponseArmaPFShortJson>()
-                .Include<ArmaPortePessoal, ResponseArmaPortePessoalShortJson>();
-
-            CreateMap<ArmaExercito, ResponseArmaExercitoShortJson>();
-            CreateMap<ArmaPF, ResponseArmaPFShortJson>();
-            CreateMap<ArmaPortePessoal, ResponseArmaPortePessoalShortJson>();
+            CreateMap<ArmaBase, ResponseRegisteredArmaJson>();
 
             CreateMap<ArmaBase, ResponseArmaBaseJson>()
-                .ForMember(dest => dest.TipoPosse, opt => opt.MapFrom(src => src.TipoPosse))
                 .Include<ArmaExercito, ResponseArmaExercitoJson>()
                 .Include<ArmaPF, ResponseArmaPFJson>()
-                .Include<ArmaPortePessoal, ResponseArmaPortePessoalJson>();
+                .Include<ArmaPortePessoal, ResponseArmaPortePessoalJson>()
+                .ForMember(dest => dest.TipoPosse, opt => opt.MapFrom(src => src.TipoPosse.ToString()));
 
             CreateMap<ArmaExercito, ResponseArmaExercitoJson>();
             CreateMap<ArmaPF, ResponseArmaPFJson>();
             CreateMap<ArmaPortePessoal, ResponseArmaPortePessoalJson>();
+
+            CreateMap<ArmaBase, ResponseArmaShortJson>()
+                .Include<ArmaExercito, ResponseArmaExercitoShortJson>()
+                .Include<ArmaPF, ResponseArmaPFShortJson>()
+                .Include<ArmaPortePessoal, ResponseArmaPortePessoalShortJson>()
+                .ForMember(dest => dest.TipoPosse, opt => opt.MapFrom(src => src.TipoPosse.ToString()));
+
+            CreateMap<ArmaExercito, ResponseArmaExercitoShortJson>();
+            CreateMap<ArmaPF, ResponseArmaPFShortJson>();
+            CreateMap<ArmaPortePessoal, ResponseArmaPortePessoalShortJson>();
         }
     }
 }

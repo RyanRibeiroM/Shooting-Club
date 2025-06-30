@@ -12,5 +12,11 @@ namespace ShootingClub.Infrastructure.Migrations.Versions
                 .WithColumn("AtualizadoEm").AsDateTime().NotNullable()
                 .WithColumn("Ativo").AsBoolean().NotNullable();
         }
+
+        protected ICreateTableWithColumnSyntax CreateTptChildTable(string childTableName, string parentTableName)
+        {
+            return Create.Table(childTableName)
+                .WithColumn("Id").AsInt32().PrimaryKey().ForeignKey(parentTableName, "Id");
+        }
     }
 }

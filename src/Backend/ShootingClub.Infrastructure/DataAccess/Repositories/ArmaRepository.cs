@@ -18,6 +18,7 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
         {
             return await _dbContext.Armas.AnyAsync(arma => arma.NumeroSerie.Equals(numeroSerie) && arma.Ativo);
         }
+
         public async Task<bool> ExistActiveArmaWithNumeroSerieAndIgnoreId(string numeroSerie, int armaId)
         {
             return await _dbContext.Armas.AnyAsync(arma => arma.Ativo && arma.NumeroSerie.Equals(numeroSerie) && arma.Id != armaId);
@@ -25,24 +26,17 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
 
         public async Task<IList<ArmaBase>> Filter(Usuario usuario, FilterArmasDto filters)
         {
-            var query = _dbContext.Armas.AsNoTracking().Where(arma => arma.Ativo);
-
+            IQueryable<ArmaBase> query = _dbContext.Armas.AsNoTracking().Where(arma => arma.Ativo);
 
             if (usuario.Nivel == NivelUsuario.AdminUsuario)
             {
-                var armasDeMembrosDoClube =
-                    from arma in query
-                    join user in _dbContext.Usuarios on arma.UsuarioId equals user.Id
-                    where user.ClubeId == usuario.ClubeId
-                    select arma;
 
-                var armasDoClube = query.Where(arma => arma.ClubeId == usuario.ClubeId && arma.UsuarioId == 0);
-
-                query = armasDeMembrosDoClube.Union(armasDoClube);
+                query = query.Where(arma => (arma.UsuarioId == 0 && arma.ClubeId == usuario.ClubeId) ||
+                                             (_dbContext.Usuarios.Any(u => u.Id == arma.UsuarioId && u.ClubeId == usuario.ClubeId)));
             }
-            else if (usuario.Nivel == NivelUsuario.CommonUsuario)
+            else
             {
-                query = query.Where(a => a.UsuarioId == usuario.Id);
+                query = query.Where(arma => arma.UsuarioId == usuario.Id);
             }
 
             if (filters.IdUsuario.HasValue)
@@ -52,7 +46,7 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
 
             if (filters.SoArmasDoClube == true)
             {
-                query = query.Where(a => a.ClubeId == usuario.ClubeId && a.UsuarioId == 0);
+                query = query.Where(a => a.UsuarioId == 0 && a.ClubeId == usuario.ClubeId);
             }
 
             if (filters.TipoPosse.HasValue)
@@ -70,6 +64,11 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
                 query = query.Where(arma => arma.Marca.Contains(filters.Marca));
             }
 
+            if (!string.IsNullOrWhiteSpace(filters.Calibre))
+            {
+                query = query.Where(arma => !string.IsNullOrEmpty(arma.Calibre) && arma.Calibre.Contains(filters.Calibre));
+            }
+
             if (!string.IsNullOrWhiteSpace(filters.NumeroSerie))
             {
                 query = query.Where(arma => arma.NumeroSerie.Contains(filters.NumeroSerie));
@@ -78,19 +77,19 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
             if (filters.ProximoExpiracao == true)
             {
                 var dataLimite = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(30));
-                var hoje = DateOnly.FromDateTime(DateTime.UtcNow);
 
-                query = query.Where(arma =>
-                    (arma is ArmaExercito &&
-                        (((ArmaExercito)arma).ValidadeCRAF.HasValue && ((ArmaExercito)arma).ValidadeCRAF <= dataLimite) ||
-                        (((ArmaExercito)arma).ValidadeGTE.HasValue && ((ArmaExercito)arma).ValidadeGTE <= dataLimite)
-                    ) ||
-                    (arma is ArmaPF &&
-                        ((ArmaPF)arma).DataValidadePF.HasValue && ((ArmaPF)arma).DataValidadePF <= dataLimite
-                    ) ||
-                    (arma is ArmaPortePessoal &&
-                        ((ArmaPortePessoal)arma).ValidadeCertificacao.HasValue && ((ArmaPortePessoal)arma).ValidadeCertificacao <= dataLimite)
-                );
+                var armasExercitoExpirando = query.OfType<ArmaExercito>()
+                    .Where(ae => ae.ValidadeCRAF <= dataLimite || ae.ValidadeGTE <= dataLimite);
+
+                var armasPfExpirando = query.OfType<ArmaPF>()
+                    .Where(apf => apf.DataValidadePF <= dataLimite);
+
+                var armasPorteExpirando = query.OfType<ArmaPortePessoal>()
+                    .Where(app => app.ValidadeCertificacao <= dataLimite);
+
+                query = armasExercitoExpirando.AsQueryable<ArmaBase>()
+                    .Concat(armasPfExpirando)
+                    .Concat(armasPorteExpirando);
             }
 
             return await query.ToListAsync();
@@ -103,77 +102,51 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
                 return false;
             }
 
-            bool armaDoClubeExiste = await _dbContext.Armas.AnyAsync(arma =>
-                arma.Id == armaId &&
-                arma.Ativo &&
-                arma.ClubeId == usuario.ClubeId &&
-                arma.UsuarioId == 0);
+            return await _dbContext.Armas.AnyAsync(arma => arma.Id == armaId && arma.Ativo &&
+                ((arma.UsuarioId == 0 && arma.ClubeId == usuario.ClubeId) ||
+                (_dbContext.Usuarios.Any(u => u.Id == arma.UsuarioId && u.ClubeId == usuario.ClubeId))));
+        }
 
-            if (armaDoClubeExiste)
+        private async Task<ArmaBase?> GetByIdPrivado(Usuario usuario, int armaId, bool asNoTracking)
+        {
+            var query = asNoTracking ? _dbContext.Armas.AsNoTracking() : _dbContext.Armas.AsQueryable();
+
+            var arma = await query.FirstOrDefaultAsync(a => a.Id == armaId && a.Ativo);
+
+            if (arma == null)
             {
-                return true;
+                return null;
             }
 
-            bool armaDeMembroExiste = await (
-                from arma in _dbContext.Armas
-                join user in _dbContext.Usuarios on arma.UsuarioId equals user.Id
-                where
-                    arma.Id == armaId &&
-                    arma.Ativo &&
-                    user.ClubeId == usuario.ClubeId
-                select arma
-            ).AnyAsync();
+            if (usuario.Nivel == NivelUsuario.AdminUsuario)
+            {
+                bool pertenceAoClube = (arma.UsuarioId == 0 && arma.ClubeId == usuario.ClubeId) ||
+                                       await _dbContext.Usuarios.AnyAsync(u => u.Id == arma.UsuarioId && u.ClubeId == usuario.ClubeId);
+                return pertenceAoClube ? arma : null;
+            }
 
-            return armaDeMembroExiste;
+            return arma.UsuarioId == usuario.Id ? arma : null;
         }
 
         async Task<ArmaBase?> IArmaReadOnlyRepository.GetById(Usuario usuario, int armaId)
         {
-            var query = _dbContext.Armas.AsNoTracking();
-
-            if (usuario.Nivel == NivelUsuario.AdminUsuario)
-            {
-                var armasDeMembrosDoClube =
-                    from arma in query
-                    join user in _dbContext.Usuarios on arma.UsuarioId equals user.Id
-                    where user.ClubeId == usuario.ClubeId
-                    select arma;
-
-                var armasDoClube = query.Where(arma => arma.ClubeId == usuario.ClubeId && arma.UsuarioId == 0);
-
-                query = armasDeMembrosDoClube.Union(armasDoClube);
-            }
-            else
-            {
-                query = query.Where(arma => arma.UsuarioId == usuario.Id);
-            }
-
-            return await query.FirstOrDefaultAsync(arma => arma.Id == armaId && arma.Ativo);
+            return await GetByIdPrivado(usuario, armaId, asNoTracking: true);
         }
 
         async Task<ArmaBase?> IArmaUpdateOnlyRepository.GetById(Usuario usuario, int armaId)
         {
-            var query = _dbContext.Armas;
-            return await query.FirstOrDefaultAsync(arma =>
-                arma.Id == armaId &&
-                arma.Ativo &&
-                (
-                    (arma.ClubeId == usuario.ClubeId && arma.UsuarioId == 0)
-                    ||
-                    (_dbContext.Usuarios.Any(user => user.Id == arma.UsuarioId && user.ClubeId == usuario.ClubeId))
-                )
-            );
-
+            return await GetByIdPrivado(usuario, armaId, asNoTracking: false);
         }
 
         public async Task Delete(int armaId)
         {
             var arma = await _dbContext.Armas.FindAsync(armaId);
-
-            _dbContext.Armas.Remove(arma!);
+            if (arma != null)
+            {
+                _dbContext.Armas.Remove(arma);
+            }
         }
 
         public void Update(ArmaBase arma) => _dbContext.Armas.Update(arma);
-
     }
 }
