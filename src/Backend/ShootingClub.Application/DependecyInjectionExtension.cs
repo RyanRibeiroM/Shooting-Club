@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShootingClub.Application.Services.AutoMapper;
+using ShootingClub.Application.UseCases.Arma.Delete;
 using ShootingClub.Application.UseCases.Arma.Filter;
 using ShootingClub.Application.UseCases.Arma.GetById;
 using ShootingClub.Application.UseCases.Arma.Register;
+using ShootingClub.Application.UseCases.Arma.Update;
 using ShootingClub.Application.UseCases.Clube.Register;
 using ShootingClub.Application.UseCases.Login.DoLogin;
 using ShootingClub.Application.UseCases.Usuario.ChangeSenha;
@@ -40,6 +42,8 @@ namespace ShootingClub.Application
             services.AddScoped<IRegisterArmaUseCase, RegisterArmaUseCase>();
             services.AddScoped<IFilterArmaUseCase, FilterArmaUseCase>();
             services.AddScoped<IGetArmaByIdUseCase, GetArmaByIdUseCase>();
+            services.AddScoped<IDeleteArmaUseCase, DeleteArmaUseCase>();
+            services.AddScoped<IUpdateArmaUseCase, UpdateArmaUseCase>();
         }
 
     }

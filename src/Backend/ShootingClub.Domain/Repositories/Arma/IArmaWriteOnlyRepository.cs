@@ -3,5 +3,6 @@
     public interface IArmaWriteOnlyRepository
     {
         public Task Add(Entities.ArmaBase arma);
+        public Task Delete(int armaId);
     }
 }

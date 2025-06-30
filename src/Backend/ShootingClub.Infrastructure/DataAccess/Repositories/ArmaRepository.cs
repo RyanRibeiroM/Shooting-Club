@@ -6,7 +6,7 @@ using ShootingClub.Domain.Dtos;
 
 namespace ShootingClub.Infrastructure.DataAccess.Repositories
 {
-    public class ArmaRepository : IArmaWriteOnlyRepository, IArmaReadOnlyRepository
+    public class ArmaRepository : IArmaWriteOnlyRepository, IArmaReadOnlyRepository, IArmaUpdateOnlyRepository
     {
         private readonly ShootingClubDbContext _dbContext;
 
@@ -17,6 +17,10 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
         public async Task<bool> ExistActiveArmaWithNumeroSerie(string numeroSerie)
         {
             return await _dbContext.Armas.AnyAsync(arma => arma.NumeroSerie.Equals(numeroSerie) && arma.Ativo);
+        }
+        public async Task<bool> ExistActiveArmaWithNumeroSerieAndIgnoreId(string numeroSerie, int armaId)
+        {
+            return await _dbContext.Armas.AnyAsync(arma => arma.Ativo && arma.NumeroSerie.Equals(numeroSerie) && arma.Id != armaId);
         }
 
         public async Task<IList<ArmaBase>> Filter(Usuario usuario, FilterArmasDto filters)
@@ -92,7 +96,38 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<ArmaBase?> GetById(Usuario usuario, int armaId)
+        public async Task<bool> CanDelete(Usuario usuario, int armaId)
+        {
+            if (usuario.Nivel != NivelUsuario.AdminUsuario)
+            {
+                return false;
+            }
+
+            bool armaDoClubeExiste = await _dbContext.Armas.AnyAsync(arma =>
+                arma.Id == armaId &&
+                arma.Ativo &&
+                arma.ClubeId == usuario.ClubeId &&
+                arma.UsuarioId == 0);
+
+            if (armaDoClubeExiste)
+            {
+                return true;
+            }
+
+            bool armaDeMembroExiste = await (
+                from arma in _dbContext.Armas
+                join user in _dbContext.Usuarios on arma.UsuarioId equals user.Id
+                where
+                    arma.Id == armaId &&
+                    arma.Ativo &&
+                    user.ClubeId == usuario.ClubeId
+                select arma
+            ).AnyAsync();
+
+            return armaDeMembroExiste;
+        }
+
+        async Task<ArmaBase?> IArmaReadOnlyRepository.GetById(Usuario usuario, int armaId)
         {
             var query = _dbContext.Armas.AsNoTracking();
 
@@ -115,5 +150,30 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
 
             return await query.FirstOrDefaultAsync(arma => arma.Id == armaId && arma.Ativo);
         }
+
+        async Task<ArmaBase?> IArmaUpdateOnlyRepository.GetById(Usuario usuario, int armaId)
+        {
+            var query = _dbContext.Armas;
+            return await query.FirstOrDefaultAsync(arma =>
+                arma.Id == armaId &&
+                arma.Ativo &&
+                (
+                    (arma.ClubeId == usuario.ClubeId && arma.UsuarioId == 0)
+                    ||
+                    (_dbContext.Usuarios.Any(user => user.Id == arma.UsuarioId && user.ClubeId == usuario.ClubeId))
+                )
+            );
+
+        }
+
+        public async Task Delete(int armaId)
+        {
+            var arma = await _dbContext.Armas.FindAsync(armaId);
+
+            _dbContext.Armas.Remove(arma!);
+        }
+
+        public void Update(ArmaBase arma) => _dbContext.Armas.Update(arma);
+
     }
 }

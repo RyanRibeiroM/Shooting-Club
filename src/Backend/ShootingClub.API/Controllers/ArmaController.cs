@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShootingClub.API.Attributes;
+using ShootingClub.Application.UseCases.Arma.Delete;
 using ShootingClub.Application.UseCases.Arma.Filter;
 using ShootingClub.Application.UseCases.Arma.GetById;
 using ShootingClub.Application.UseCases.Arma.Register;
+using ShootingClub.Application.UseCases.Arma.Update;
 using ShootingClub.Communication.Requests;
 using ShootingClub.Communication.Responses;
 
@@ -51,5 +53,37 @@ namespace ShootingClub.API.Controllers
 
             return Ok(response);
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+        [AuthenticatedAdmin]
+        public async Task<IActionResult> Delete(
+            [FromServices] IDeleteArmaUseCase useCase,
+            [FromRoute] int id)
+        {
+            await useCase.Execute(id);
+
+            return NoContent(); 
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+        [AuthenticatedAdminWithClube]
+        public async Task<IActionResult> Update(
+            [FromServices] IUpdateArmaUseCase useCase,
+            [FromRoute] int id,
+            [FromBody] RequestArmaBaseJson request
+            )
+        {
+            await useCase.Execute(id, request);
+
+            return NoContent();
+        }
+
+
     }
 }

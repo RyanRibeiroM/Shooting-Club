@@ -52,6 +52,7 @@ namespace ShootingClub.Infrastructure
             services.AddScoped<IClubeUpdateOnlyRepository, ClubeRepository>();
             services.AddScoped<IArmaWriteOnlyRepository, ArmaRepository>();
             services.AddScoped<IArmaReadOnlyRepository, ArmaRepository>();
+            services.AddScoped<IArmaUpdateOnlyRepository, ArmaRepository>();
         }
 
         private static void AddFluentMigrator(IServiceCollection services, IConfiguration configuration)

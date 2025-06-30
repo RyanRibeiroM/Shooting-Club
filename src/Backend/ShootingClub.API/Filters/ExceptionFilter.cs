@@ -14,8 +14,8 @@ namespace ShootingClub.API.Filters
         {
             if (context.Exception is ShootingClubException)
                 HandleProjectException(context);
-            else
-                ThrowUnknowExcept(context);
+            //else
+            //    ThrowUnknowExcept(context);
         }
         private static void HandleProjectException(ExceptionContext context)
         {
