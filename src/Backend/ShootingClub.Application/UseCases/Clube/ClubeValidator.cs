@@ -3,12 +3,12 @@ using ShootingClub.Application.Utils;
 using ShootingClub.Communication.Requests;
 using ShootingClub.Exceptions;
 
-namespace ShootingClub.Application.UseCases.Clube.Register
+namespace ShootingClub.Application.UseCases.Clube
 {
-    public class RegisterClubeValidator : AbstractValidator<RequestRegisterClubeJson>
+    public class ClubeValidator : AbstractValidator<RequestClubeJson>
     {
         private const string TextAndNumbersRegex = @"^[a-zA-Z0-9\u00C0-\u017F\s'-]+$";
-        public RegisterClubeValidator()
+        public ClubeValidator()
         {
             RuleFor(clube => clube.Nome)
                 .NotEmpty()

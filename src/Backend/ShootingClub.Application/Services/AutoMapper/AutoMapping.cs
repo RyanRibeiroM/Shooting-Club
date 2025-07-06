@@ -15,11 +15,11 @@ namespace ShootingClub.Application.Services.AutoMapper
 
         private void RequestToDomain()
         {
-            CreateMap<RequestRegisterUsuarioJson, Usuario>()
+            CreateMap<RequestUsuarioJson, Usuario>()
                 .ForMember(dest => dest.Senha, opt => opt.Ignore())
                 .ForMember(dest => dest.CPF, opt => opt.Ignore());
 
-            CreateMap<RequestRegisterClubeJson, Clube>()
+            CreateMap<RequestClubeJson, Clube>()
                 .ForMember(dest => dest.CNPJ, opt => opt.Ignore());
 
             CreateMap<RequestArmaBaseJson, ArmaBase>()
@@ -34,9 +34,13 @@ namespace ShootingClub.Application.Services.AutoMapper
 
         private void DomainToResponse()
         {
-            CreateMap<Usuario, ResponseUsuarioProfileJson>();
-            CreateMap<ArmaBase, ResponseRegisteredArmaJson>();
+            CreateMap<Clube, ResponseClubeProfileJson>();
 
+            CreateMap<Usuario, ResponseUsuarioProfileJson>();
+            CreateMap<Usuario, ResponseUsuarioShortJson>();
+            CreateMap<Usuario, ResponseUsuarioJson>();
+
+            CreateMap<ArmaBase, ResponseRegisteredArmaJson>();
             CreateMap<ArmaBase, ResponseArmaBaseJson>()
                 .Include<ArmaExercito, ResponseArmaExercitoJson>()
                 .Include<ArmaPF, ResponseArmaPFJson>()

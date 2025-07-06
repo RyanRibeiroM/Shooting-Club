@@ -25,7 +25,7 @@ namespace ShootingClub.Application.UseCases.Arma.GetById
             var arma = await _repository.GetById(loggedUsuario, armaId);
             if (arma is null)
             {
-                throw new NotFoundException(ResourceMessagesException.ARMA_NOT_FOUND);
+                throw new NotFoundException(ResourceMessagesException.ARMA_NAO_ENCONTRADA);
             }
 
             return _mapper.Map<ResponseArmaBaseJson>(arma);

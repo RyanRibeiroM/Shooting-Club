@@ -4,11 +4,6 @@ using ShootingClub.Communication.Responses;
 using ShootingClub.Domain.Repositories.Arma;
 using ShootingClub.Domain.Services.LoggedUsuario;
 using ShootingClub.Exceptions.ExceptionsBase;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShootingClub.Application.UseCases.Arma.Filter
 {

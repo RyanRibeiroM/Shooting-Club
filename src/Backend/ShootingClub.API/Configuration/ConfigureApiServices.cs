@@ -21,8 +21,6 @@ namespace ShootingClub.API.Configuration
                     {
                         static typeInfo =>
                         {
-                            // Configuração para DESERIALIZAÇÃO (Request)
-                            // Garante que a API saiba como ler o JSON de uma nova arma
                             if (typeInfo.Type == typeof(RequestArmaBaseJson))
                             {
                                 typeInfo.PolymorphismOptions = new JsonPolymorphismOptions
@@ -37,8 +35,6 @@ namespace ShootingClub.API.Configuration
                                     }
                                 };
                             }
-                            // Configuração para SERIALIZAÇÃO (Response Curta)
-                            // Garante que a API saiba como montar o JSON para listas de armas
                             else if (typeInfo.Type == typeof(ResponseArmaShortJson))
                             {
                                 typeInfo.PolymorphismOptions = new JsonPolymorphismOptions
@@ -53,8 +49,6 @@ namespace ShootingClub.API.Configuration
                                     }
                                 };
                             }
-                            // Configuração para SERIALIZAÇÃO (Response Completa)
-                            // Garante que a API saiba como montar o JSON para detalhes de uma arma
                             else if (typeInfo.Type == typeof(ResponseArmaBaseJson))
                             {
                                 typeInfo.PolymorphismOptions = new JsonPolymorphismOptions

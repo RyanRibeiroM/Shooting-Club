@@ -7,9 +7,9 @@ using ShootingClub.Exceptions;
 using System.Data;
 using System.Text.RegularExpressions;
 
-namespace ShootingClub.Application.UseCases.Usuario.Register
+namespace ShootingClub.Application.UseCases.Usuario
 {
-    public class RegisterUsuarioValidator : AbstractValidator<RequestRegisterUsuarioJson>
+    public class UsuarioValidator : AbstractValidator<RequestUsuarioJson>
     {
         private const string TextOnlyRegex = @"^[a-zA-Z\u00C0-\u017F\s'-]+$";
         private const string TextAndNumbersRegex = @"^[a-zA-Z0-9\u00C0-\u017F\s'-]+$";
@@ -17,7 +17,7 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
         private const string SfpcRegex = @"^(1[0-2]|[1-9])ª\sRM$";
 
 
-        public RegisterUsuarioValidator()
+        public UsuarioValidator()
         {
             RuleFor(usuario => usuario.Nome)
                 .NotEmpty()
@@ -30,7 +30,7 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
                 .Must(EmailUtils.IsValidEmail)
                 .WithMessage(ResourceMessagesException.EMAIL_INVALIDO);
 
-            RuleFor(usuario => usuario.Senha).SetValidator(new SenhaValidator<RequestRegisterUsuarioJson>());
+            RuleFor(usuario => usuario.Senha).SetValidator(new SenhaValidator<RequestUsuarioJson>());
 
             RuleFor(Usuario => Usuario.CPF)
                 .NotEmpty()

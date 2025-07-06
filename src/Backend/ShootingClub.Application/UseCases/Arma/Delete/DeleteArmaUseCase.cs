@@ -30,7 +30,7 @@ namespace ShootingClub.Application.UseCases.Arma.Delete
 
             if (!canDelete)
             {
-                throw new NotFoundException(ResourceMessagesException.ARMA_NOT_FOUND);
+                throw new NotFoundException(ResourceMessagesException.ARMA_NAO_ENCONTRADA);
             }
 
             await _repositoryWrite.Delete(armaId);

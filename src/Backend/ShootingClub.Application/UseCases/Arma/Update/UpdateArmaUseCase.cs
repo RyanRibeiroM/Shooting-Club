@@ -47,7 +47,7 @@ namespace ShootingClub.Application.UseCases.Arma.Update
             var arma = await _updateOnlyRepository.GetById(loggedUsuario, armaId);
 
             if (arma is null)
-                throw new NotFoundException(ResourceMessagesException.ARMA_NOT_FOUND);
+                throw new NotFoundException(ResourceMessagesException.ARMA_NAO_ENCONTRADA);
 
             if (arma.TipoPosse != (Domain.Enums.TipoPosseArma)request.TipoPosse)
                 throw new ErrorOnValidationException([ResourceMessagesException.TIPO_POSSE_NAO_PODE_SER_ALTERADO]);

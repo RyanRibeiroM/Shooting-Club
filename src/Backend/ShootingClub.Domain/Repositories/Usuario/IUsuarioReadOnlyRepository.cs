@@ -1,4 +1,6 @@
-﻿namespace ShootingClub.Domain.Repositories.Usuario
+﻿using ShootingClub.Domain.Dtos;
+
+namespace ShootingClub.Domain.Repositories.Usuario
 {
     public interface IUsuarioReadOnlyRepository
     {
@@ -11,5 +13,7 @@
         public Task<Entities.Usuario?> GetByEmailAndSenha(string email, string senha);
         public Task<int> GetIdUsuarioByCPF(string cpf);
         public Task<bool> ExistActiveUserWithIdentificador(Guid IdentificadorUsuario);
+        public Task<Entities.Usuario> GetById(int id);
+        public Task<IList<Entities.Usuario>> Filter(Entities.Usuario admin, FilterUsuariosDto filters);
     }
 }

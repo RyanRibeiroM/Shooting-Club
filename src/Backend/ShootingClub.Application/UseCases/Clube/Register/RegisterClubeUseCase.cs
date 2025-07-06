@@ -31,7 +31,7 @@ namespace ShootingClub.Application.UseCases.Clube.Register
             _usuarioUpdateOnlyRepository = usuarioUpdateOnlyRepository;
         }
 
-        public async Task<ResponseRegisteredClubeJson> Execute(RequestRegisterClubeJson request)
+        public async Task<ResponseRegisteredClubeJson> Execute(RequestClubeJson request)
         {
             var loggedUsuario = await _loggedUsuario.Usuario();
 
@@ -56,9 +56,9 @@ namespace ShootingClub.Application.UseCases.Clube.Register
             return new ResponseRegisteredClubeJson { Nome = request.Nome };
         }
 
-        private async Task Validate(RequestRegisterClubeJson request, int idUsuario)
+        private async Task Validate(RequestClubeJson request, int idUsuario)
         {
-            var validator = new RegisterClubeValidator();
+            var validator = new ClubeValidator();
 
             var result = validator.Validate(request);
             var cnpj = CnpjUtils.Format(request.CNPJ);

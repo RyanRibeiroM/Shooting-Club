@@ -6,12 +6,17 @@ using ShootingClub.Application.UseCases.Arma.Filter;
 using ShootingClub.Application.UseCases.Arma.GetById;
 using ShootingClub.Application.UseCases.Arma.Register;
 using ShootingClub.Application.UseCases.Arma.Update;
+using ShootingClub.Application.UseCases.Clube.Profile;
 using ShootingClub.Application.UseCases.Clube.Register;
+using ShootingClub.Application.UseCases.Clube.Update;
 using ShootingClub.Application.UseCases.Login.DoLogin;
 using ShootingClub.Application.UseCases.Usuario.ChangeSenha;
+using ShootingClub.Application.UseCases.Usuario.Filter;
+using ShootingClub.Application.UseCases.Usuario.GetById;
 using ShootingClub.Application.UseCases.Usuario.Profile;
 using ShootingClub.Application.UseCases.Usuario.Register;
 using ShootingClub.Application.UseCases.Usuario.Update;
+using ShootingClub.Application.UseCases.Usuario.UpdateByAdmin;
 
 namespace ShootingClub.Application
 {
@@ -44,7 +49,11 @@ namespace ShootingClub.Application
             services.AddScoped<IGetArmaByIdUseCase, GetArmaByIdUseCase>();
             services.AddScoped<IDeleteArmaUseCase, DeleteArmaUseCase>();
             services.AddScoped<IUpdateArmaUseCase, UpdateArmaUseCase>();
+            services.AddScoped<IFilterUsuarioUseCase, FilterUsuarioUseCase>();
+            services.AddScoped<IUsuarioUpdateByAdminUseCase, UsuarioUpdateByAdminUseCase>();
+            services.AddScoped<IGetUsuarioByIdUseCase, GetUsuarioByIdUseCase>();
+            services.AddScoped<IUpdateClubeUseCase, UpdateClubeUseCase>();
+            services.AddScoped<IGetClubeProfileUseCase, GetClubeProfileUseCase>();
         }
-
     }
 }

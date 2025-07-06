@@ -14,15 +14,6 @@ namespace ShootingClub.Application.UseCases.Usuario.Update
                 .Must(nome => nome.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries).Length >= 2)
                 .WithMessage(ResourceMessagesException.NOME_INVALIDO);
 
-            RuleFor(usuario => usuario.Email).NotEmpty()
-                .EmailAddress()
-                .WithMessage(ResourceMessagesException.EMAIL_INVALIDO);
-
-            RuleFor(Usuario => Usuario.CPF)
-                .NotEmpty()
-                .Must(CpfUtils.ValidCPF)
-                .WithMessage(ResourceMessagesException.CPF_INVALIDO);
-
             RuleFor(usuario => usuario.DataNascimento)
                 .NotEmpty()
                 .LessThanOrEqualTo(_ => DateOnly.FromDateTime(DateTime.Today))
@@ -52,25 +43,6 @@ namespace ShootingClub.Application.UseCases.Usuario.Update
                 .NotEmpty()
                 .WithMessage(ResourceMessagesException.ENDERECO_NUMERO_INVALIDO);
 
-            When(usuario => !string.IsNullOrWhiteSpace(usuario.CR), () =>
-            {
-                RuleFor(usuario => usuario.CR)
-                    .Matches("^[0-9]+$")
-                    .WithMessage(ResourceMessagesException.CR_INVALIDO);
-
-                RuleFor(usuario => usuario.DataVencimentoCR)
-                    .NotEmpty().WithMessage(ResourceMessagesException.DATA_VENCIMENTO_CR_REQUERIDA)
-                    .GreaterThan(DateOnly.FromDateTime(DateTime.Today)).WithMessage(ResourceMessagesException.DATA_VENCIMENTO_CR_INVALIDA);
-
-                RuleFor(usuario => usuario.SFPCVinculacao)
-                    .NotEmpty().WithMessage(ResourceMessagesException.SFPC_VINCULACAO_REQUERIDO);
-            })
-            .Otherwise(() =>
-            {
-                RuleFor(usuario => usuario.DataVencimentoCR)
-                    .Empty()
-                    .WithMessage(ResourceMessagesException.DATA_VENCIMENTO_CR_SEM_CR);
-            });
         }
     }
 }

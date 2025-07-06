@@ -90,9 +90,9 @@ namespace ShootingClub.Exceptions {
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Nenhuma arma foi encontrada..
         /// </summary>
-        public static string ARMA_NOT_FOUND {
+        public static string ARMA_NAO_ENCONTRADA {
             get {
-                return ResourceManager.GetString("ARMA_NOT_FOUND", resourceCulture);
+                return ResourceManager.GetString("ARMA_NAO_ENCONTRADA", resourceCulture);
             }
         }
         
@@ -561,6 +561,15 @@ namespace ShootingClub.Exceptions {
         public static string TIPO_POSSE_NAO_PODE_SER_ALTERADO {
             get {
                 return ResourceManager.GetString("TIPO_POSSE_NAO_PODE_SER_ALTERADO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Nenhum usuário foi encontrado..
+        /// </summary>
+        public static string USUARIO_NAO_ENCONTRADO {
+            get {
+                return ResourceManager.GetString("USUARIO_NAO_ENCONTRADO", resourceCulture);
             }
         }
         

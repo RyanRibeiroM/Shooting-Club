@@ -1,6 +1,6 @@
 ﻿namespace ShootingClub.Communication.Requests
 {
-    public class RequestRegisterClubeJson
+    public class RequestClubeJson
     {
         public string Nome { get; set; } = string.Empty;
         public string CNPJ { get; set; } = string.Empty;

@@ -5,6 +5,6 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
 {
     public interface IRegisterUsuarioUseCase
     {
-        public Task<ResponseRegisteredUsuarioJson> Execute(RequestRegisterUsuarioJson request);
+        public Task<ResponseRegisteredUsuarioJson> Execute(RequestUsuarioJson request);
     }
 }

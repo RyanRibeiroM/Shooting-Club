@@ -38,7 +38,7 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
             _unitOfWork = unitOfWork;
             _loggedUsuario = loggedUsuario;
         }
-        public async Task<ResponseRegisteredUsuarioJson> Execute(RequestRegisterUsuarioJson request)
+        public async Task<ResponseRegisteredUsuarioJson> Execute(RequestUsuarioJson request)
         {
             await Validate(request);
 
@@ -61,9 +61,9 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
 
         }
 
-        private async Task Validate(RequestRegisterUsuarioJson request)
+        private async Task Validate(RequestUsuarioJson request)
         {
-            var validator = new RegisterUsuarioValidator();
+            var validator = new UsuarioValidator();
 
             var result = validator.Validate(request);
 

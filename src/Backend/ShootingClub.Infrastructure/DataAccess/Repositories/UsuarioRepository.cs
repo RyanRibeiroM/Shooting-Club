@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using ShootingClub.Domain.Dtos;
 using ShootingClub.Domain.Entities;
-using ShootingClub.Domain.Enums;
 using ShootingClub.Domain.Repositories.Usuario;
 
 namespace ShootingClub.Infrastructure.DataAccess.Repositories
@@ -60,13 +59,19 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
 
         public async Task<bool> ExistActiveUserWithIdentificador(Guid IdentificadorUsuario) => await _dbContext.Usuarios.AnyAsync(usuario => usuario.IdentificadorUsuario.Equals(IdentificadorUsuario) && usuario.Ativo);
 
-        public async Task<Usuario> GetById(int id)
+        async Task<Usuario> IUsuarioUpdateOnlyRepository.GetById(int id)
         {
             return await _dbContext
                 .Usuarios
                 .FirstAsync(usuario => usuario.Id == id);
         }
-
+        async Task<Usuario> IUsuarioReadOnlyRepository.GetById(int id)
+        {
+            return await _dbContext
+                .Usuarios
+                .AsNoTracking()
+                .FirstAsync(usuario => usuario.Id == id);
+        }
         public async Task<Usuario?> GetActiveUserByIdentificador(Guid identificadorUsuario)
         {
             return await _dbContext.Usuarios
@@ -79,5 +84,28 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
             return await _dbContext.Usuarios.AnyAsync(usuario => usuario.IdentificadorUsuario.Equals(IdentificadorUsuario) && usuario.Ativo && usuario.ClubeId > 0);
         }
         public void Update(Usuario usuario) => _dbContext.Usuarios.Update(usuario);
+
+
+        public async Task<IList<Usuario>> Filter(Usuario admin, FilterUsuariosDto filters)
+        {
+            IQueryable<Usuario> query = _dbContext.Usuarios.AsNoTracking().Where(usuario => usuario.Ativo && usuario.ClubeId == admin.ClubeId && usuario.Id != admin.Id);
+
+            if (!string.IsNullOrWhiteSpace(filters.Nome))
+            {
+                query = query.Where(u => u.Nome.Contains(filters.Nome));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filters.Email))
+            {
+                query = query.Where(u => u.Email.Contains(filters.Email));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filters.CPF))
+            {
+                query = query.Where(u => u.CPF.Contains(filters.CPF));
+            }
+
+            return await query.ToListAsync();
+        }
     }
 }
