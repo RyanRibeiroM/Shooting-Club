@@ -4,9 +4,9 @@ using ShootingClub.Application.Utils;
 using ShootingClub.Communication.Requests;
 using ShootingClub.Communication.Responses;
 using ShootingClub.Domain.Repositories;
+using ShootingClub.Domain.Repositories.Token;
 using ShootingClub.Domain.Repositories.Usuario;
 using ShootingClub.Domain.Security.Cryptography;
-using ShootingClub.Domain.Security.Tokens;
 using ShootingClub.Domain.Services.LoggedUsuario;
 using ShootingClub.Exceptions;
 using ShootingClub.Exceptions.ExceptionsBase;
@@ -21,6 +21,8 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
         private readonly IMapper _mapper;
         private readonly ISenhaEncripter _passwordEncripter;
         private readonly ILoggedUsuario _loggedUsuario;
+        private readonly IRefreshTokenGenerator _refreshTokenGenerator;
+        private readonly ITokenRepository _tokenRepository;
 
         public RegisterUsuarioUseCase(
             IUsuarioReadOnlyRepository usuarioReadOnlyRepository,
@@ -28,7 +30,9 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
             IMapper mapper,
             ISenhaEncripter passwordEncripter,
             IUnitOfWork unitOfWork,
-            ILoggedUsuario loggedUsuario
+            ILoggedUsuario loggedUsuario,
+            IRefreshTokenGenerator refreshTokenGenerator,
+            ITokenRepository tokenRepository
             )
         {
             _usuarioReadOnlyRepository = usuarioReadOnlyRepository;
@@ -37,6 +41,8 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
             _passwordEncripter = passwordEncripter;
             _unitOfWork = unitOfWork;
             _loggedUsuario = loggedUsuario;
+            _refreshTokenGenerator = refreshTokenGenerator;
+            _tokenRepository = tokenRepository;
         }
         public async Task<ResponseRegisteredUsuarioJson> Execute(RequestUsuarioJson request)
         {
@@ -49,15 +55,33 @@ namespace ShootingClub.Application.UseCases.Usuario.Register
             usuario.IdentificadorUsuario = Guid.NewGuid();
 
             usuario.CPF = CpfUtils.Format(request.CPF);
-            usuario.AtualizadoEm = DateTime.UtcNow;
             usuario.ClubeId = loggedUsuario.ClubeId;
 
             await _usuarioWriteOnlyRepository.Add(usuario);
+
             await _unitOfWork.Commit();
+
+            var refreshToken = await CreateAndSaveRefreshToken(usuario);
 
             return new ResponseRegisteredUsuarioJson { 
                 Nome = request.Nome
             };
+
+        }
+
+        public async Task<string> CreateAndSaveRefreshToken(Domain.Entities.Usuario usuario)
+        {
+            var refreshToken = new Domain.Entities.RefreshToken
+            {
+                Value = _refreshTokenGenerator.Generate(),
+                UsuarioId = usuario.Id
+            };
+
+            await _tokenRepository.SaveNewRefreshToken(refreshToken);
+
+            await _unitOfWork.Commit();
+
+            return refreshToken.Value;
 
         }
 

@@ -42,7 +42,6 @@ namespace ShootingClub.Application.UseCases.Clube.Register
             clube.ResponsavelId = loggedUsuario.Id;
 
             clube.CNPJ = CnpjUtils.Format(request.CNPJ);
-            clube.AtualizadoEm = DateTime.UtcNow;
 
             await _clubeWriteOnlyRepository.Add(clube);
             await _unitOfWork.Commit();

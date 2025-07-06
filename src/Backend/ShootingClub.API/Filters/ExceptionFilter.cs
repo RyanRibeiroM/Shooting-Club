@@ -35,6 +35,11 @@ namespace ShootingClub.API.Filters
                 context.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
                 context.Result = new BadRequestObjectResult(new ResponseErrorJson(context.Exception.Message));
             }
+            else if (context.Exception is RefreshTokenNotFoundException)
+            {
+                context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Result = new UnauthorizedObjectResult(new ResponseErrorJson(context.Exception.Message));
+            }
         }
 
         private static void ThrowUnknowExcept(ExceptionContext context)

@@ -10,6 +10,7 @@ using ShootingClub.Application.UseCases.Clube.Profile;
 using ShootingClub.Application.UseCases.Clube.Register;
 using ShootingClub.Application.UseCases.Clube.Update;
 using ShootingClub.Application.UseCases.Login.DoLogin;
+using ShootingClub.Application.UseCases.Token.RefreshToken;
 using ShootingClub.Application.UseCases.Usuario.ChangeSenha;
 using ShootingClub.Application.UseCases.Usuario.Filter;
 using ShootingClub.Application.UseCases.Usuario.GetById;
@@ -54,6 +55,7 @@ namespace ShootingClub.Application
             services.AddScoped<IGetUsuarioByIdUseCase, GetUsuarioByIdUseCase>();
             services.AddScoped<IUpdateClubeUseCase, UpdateClubeUseCase>();
             services.AddScoped<IGetClubeProfileUseCase, GetClubeProfileUseCase>();
+            services.AddScoped<IUserRefreshTokenUseCase, UseRefreshTokenUseCase>();
         }
     }
 }

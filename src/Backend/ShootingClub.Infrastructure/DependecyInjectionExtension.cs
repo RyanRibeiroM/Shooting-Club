@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ShootingClub.Domain.Repositories;
 using ShootingClub.Domain.Repositories.Arma;
 using ShootingClub.Domain.Repositories.Clube;
+using ShootingClub.Domain.Repositories.Token;
 using ShootingClub.Domain.Repositories.Usuario;
 using ShootingClub.Domain.Security.Cryptography;
 using ShootingClub.Domain.Security.Tokens;
@@ -15,6 +16,7 @@ using ShootingClub.Infrastructure.Extensions;
 using ShootingClub.Infrastructure.Security.Cryptography;
 using ShootingClub.Infrastructure.Security.Tokens.Access.Generator;
 using ShootingClub.Infrastructure.Security.Tokens.Access.Validator;
+using ShootingClub.Infrastructure.Security.Tokens.Refresh;
 using ShootingClub.Infrastructure.Services.LoggedUsuario;
 using System.Reflection;
 
@@ -53,6 +55,8 @@ namespace ShootingClub.Infrastructure
             services.AddScoped<IArmaWriteOnlyRepository, ArmaRepository>();
             services.AddScoped<IArmaReadOnlyRepository, ArmaRepository>();
             services.AddScoped<IArmaUpdateOnlyRepository, ArmaRepository>();
+            services.AddScoped<ITokenRepository, TokenRepository>();
+            services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
         }
 
         private static void AddFluentMigrator(IServiceCollection services, IConfiguration configuration)

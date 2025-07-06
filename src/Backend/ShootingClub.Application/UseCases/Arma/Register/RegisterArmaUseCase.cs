@@ -56,7 +56,6 @@ namespace ShootingClub.Application.UseCases.Arma.Register
             }else
                 arma.ClubeId = loggedUsuario.ClubeId;
 
-            arma.AtualizadoEm = DateTime.UtcNow;
             arma.NumeroSerie = arma.NumeroSerie.ToUpperInvariant();
 
             await _armaWriteOnlyRepository.Add(arma);
