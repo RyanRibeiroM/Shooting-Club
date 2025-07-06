@@ -4,13 +4,13 @@ namespace ShootingClub.Domain.Repositories.Usuario
 {
     public interface IUsuarioReadOnlyRepository
     {
-        Task<bool> ExistActiveUsuarioWithEmail(string email);
-        Task<bool> ExistActiveUsuarioWithCPF(string cpf);
-        Task<bool> ExistActiveUsuarioWithCR(string cr);
-        Task<bool> ExistActiveUsuarioWithClubeAndCPF(int clubeId, string cpf);
-        Task<bool> ExistActiveUsuarioWithNumeroFiliacao(string numeroFiliacao);
-        Task<bool> ActiveUsuarioHasClube(Guid IdentificadorUsuario);
-        public Task<Entities.Usuario?> GetByEmailAndSenha(string email, string senha);
+        public Task<bool> ExistActiveUsuarioWithEmail(string email);
+        public Task<bool> ExistActiveUsuarioWithCPF(string cpf);
+        public Task<bool> ExistActiveUsuarioWithCR(string cr);
+        public Task<bool> ExistActiveUsuarioWithClubeAndCPF(int clubeId, string cpf);
+        public Task<bool> ExistActiveUsuarioWithNumeroFiliacao(string numeroFiliacao);
+        public Task<bool> ActiveUsuarioHasClube(Guid IdentificadorUsuario);
+        public Task<Entities.Usuario?> GetByEmail(string email);
         public Task<int> GetIdUsuarioByCPF(string cpf);
         public Task<bool> ExistActiveUserWithIdentificador(Guid IdentificadorUsuario);
         public Task<Entities.Usuario> GetById(int id);

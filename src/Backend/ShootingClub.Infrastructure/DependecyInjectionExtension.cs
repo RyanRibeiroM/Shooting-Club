@@ -24,7 +24,7 @@ namespace ShootingClub.Infrastructure
     {
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            AddPasswordEncript(services, configuration);
+            AddPasswordEncript(services);
             AddRepositories(services);
             AddLoggedUsuario(services);
             AddTokens(services, configuration);
@@ -77,10 +77,9 @@ namespace ShootingClub.Infrastructure
         }
 
         private static void AddLoggedUsuario(IServiceCollection services) => services.AddScoped<ILoggedUsuario, LoggedUsuario>();
-        private static void AddPasswordEncript(IServiceCollection services, IConfiguration configuration)
+        private static void AddPasswordEncript(IServiceCollection services)
         {
-            var additionalKey = configuration.GetValue<string>("Settings:Password:AdditionalKey");
-            services.AddScoped<ISenhaEncripter>(Options => new Sha512Encripter(additionalKey!));
+            services.AddScoped<ISenhaEncripter, BCryptNet>();
         }
     }
 }

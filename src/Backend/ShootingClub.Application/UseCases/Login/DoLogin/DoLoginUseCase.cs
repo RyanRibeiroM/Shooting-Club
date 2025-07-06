@@ -4,6 +4,7 @@ using ShootingClub.Domain.Repositories.Usuario;
 using ShootingClub.Domain.Security.Cryptography;
 using ShootingClub.Domain.Security.Tokens;
 using ShootingClub.Exceptions.ExceptionsBase;
+using System.Reflection.Metadata;
 
 namespace ShootingClub.Application.UseCases.Login.DoLogin
 {
@@ -22,9 +23,10 @@ namespace ShootingClub.Application.UseCases.Login.DoLogin
         }
         public async Task<ResponseLoggedInUsuarioJson> Execute(RequestLoginJson request)
         {
-            var encriptedSenha = _passwordEncripter.Encrypt(request.Senha);
-            var usuario = await _repository.GetByEmailAndSenha(request.Email, encriptedSenha) ?? throw new InvalidLoginException();
+            var usuario = await _repository.GetByEmail(request.Email);
 
+            if(usuario is null || !_passwordEncripter.IsValid(request.Senha, usuario.Senha))
+                throw new InvalidLoginException();
 
             return new ResponseLoggedInUsuarioJson
             {

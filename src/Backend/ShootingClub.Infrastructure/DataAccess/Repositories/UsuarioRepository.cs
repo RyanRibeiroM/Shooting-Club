@@ -40,12 +40,12 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
         }
 
 
-        public async Task<Usuario?> GetByEmailAndSenha(string email, string senha)
+        public async Task<Usuario?> GetByEmail(string email)
         {
             return await _dbContext
                 .Usuarios
                 .AsNoTracking()
-                .FirstOrDefaultAsync(usuario =>usuario.Ativo && usuario.Email.Equals(email) && usuario.Senha.Equals(senha));
+                .FirstOrDefaultAsync(usuario =>usuario.Ativo && usuario.Email.Equals(email));
         }
 
         public async Task<int> GetIdUsuarioByCPF(string cpf)
@@ -103,6 +103,13 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
             if (!string.IsNullOrWhiteSpace(filters.CPF))
             {
                 query = query.Where(u => u.CPF.Contains(filters.CPF));
+            }
+
+            if (filters.ProximoExpiracao == true)
+            {
+                var dataLimite = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(30));
+
+                query = query.Where(u => u.DataVencimentoCR <= dataLimite || u.DataRenovacaoFiliacao <= dataLimite);
             }
 
             return await query.ToListAsync();

@@ -41,8 +41,7 @@ namespace ShootingClub.Application.UseCases.Usuario.ChangeSenha
         {
             var result = new ChangeSenhaValidator().Validate(request);
 
-            var currentSenhaEncripted = _senhaEncripter.Encrypt(request.Senha);
-            if (!currentSenhaEncripted.Equals(loggedUsuario.Senha))
+            if (!_senhaEncripter.IsValid(request.Senha, loggedUsuario.Senha))
                 result.Errors.Add(new FluentValidation.Results.ValidationFailure(string.Empty, ResourceMessagesException.SENHA_DIFERENTE_ATUAL));
 
             if (!result.IsValid)

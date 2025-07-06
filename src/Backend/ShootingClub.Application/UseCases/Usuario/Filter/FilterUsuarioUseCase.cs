@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using ShootingClub.Communication.Requests;
 using ShootingClub.Communication.Responses;
-using ShootingClub.Domain.Repositories.Arma;
 using ShootingClub.Domain.Repositories.Usuario;
 using ShootingClub.Domain.Services.LoggedUsuario;
 
@@ -26,7 +25,8 @@ namespace ShootingClub.Application.UseCases.Usuario.Filter
             {
                 Nome = request.Nome,
                 Email = request.Email,
-                CPF = request.CPF
+                CPF = request.CPF,
+                ProximoExpiracao = request.ProximoExpiracao
             };
             var usuarios = await _usuarioReadOnlyRepository.Filter(loggedUser, filters);
 
