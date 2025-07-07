@@ -114,5 +114,12 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
 
             return await query.ToListAsync();
         }
+
+        public async Task<int> CountTotalByClub(int clubeId)
+        {
+            return await _dbContext.Usuarios
+            .Where(u => u.ClubeId == clubeId)
+            .CountAsync();
+        }
     }
 }

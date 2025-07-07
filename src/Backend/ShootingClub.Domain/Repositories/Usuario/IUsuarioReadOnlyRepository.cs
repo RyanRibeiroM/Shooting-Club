@@ -15,5 +15,6 @@ namespace ShootingClub.Domain.Repositories.Usuario
         public Task<bool> ExistActiveUserWithIdentificador(Guid IdentificadorUsuario);
         public Task<Entities.Usuario> GetById(int id);
         public Task<IList<Entities.Usuario>> Filter(Entities.Usuario admin, FilterUsuariosDto filters);
+        Task<int> CountTotalByClub(int clubeId);
     }
 }

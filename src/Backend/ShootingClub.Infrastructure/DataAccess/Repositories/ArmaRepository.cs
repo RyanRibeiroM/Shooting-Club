@@ -148,5 +148,47 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
         }
 
         public void Update(ArmaBase arma) => _dbContext.Armas.Update(arma);
+
+        public async Task<int> CountExpiredByClub(int clubeId)
+        {
+            var today = DateOnly.FromDateTime(DateTime.UtcNow);
+
+            var userIdsDoClube = await _dbContext.Usuarios
+                .Where(u => u.ClubeId == clubeId)
+                .Select(u => u.Id)
+                .ToListAsync();
+
+            var baseQuery = _dbContext.Armas
+                .Where(a =>
+                    (a.UsuarioId == 0 && a.ClubeId == clubeId) ||
+                    (a.UsuarioId != 0 && userIdsDoClube.Contains(a.UsuarioId))
+                );
+
+            var armasExercitoExpirando = await baseQuery.OfType<ArmaExercito>()
+                .CountAsync(ae => ae.ValidadeCRAF < today || ae.ValidadeGTE < today);
+
+            var armasPfExpirando = await baseQuery.OfType<ArmaPF>()
+                .CountAsync(apf => apf.DataValidadePF < today);
+
+            var armasPorteExpirando = await baseQuery.OfType<ArmaPortePessoal>()
+                .CountAsync(app => app.ValidadeCertificacao < today);
+
+            return armasExercitoExpirando + armasPfExpirando + armasPorteExpirando;
+        }
+
+        public async Task<int> CountTotalByClub(int clubeId)
+        {
+            var userIdsDoClube = await _dbContext.Usuarios
+            .Where(u => u.ClubeId == clubeId)
+            .Select(u => u.Id)
+            .ToListAsync();
+
+            return await _dbContext.Armas
+                .Where(a =>
+                    (a.UsuarioId == 0 && a.ClubeId == clubeId) ||
+                    (a.UsuarioId != 0 && userIdsDoClube.Contains(a.UsuarioId))
+                )
+                .CountAsync();
+        }
     }
 }
