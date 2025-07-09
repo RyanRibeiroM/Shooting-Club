@@ -27,7 +27,7 @@ namespace ShootingClub.Application.UseCases.Dashboard.accountants
             var loggedUsuario = await _loggedUsuario.Usuario();
 
             var armasAtrasadasTask = await _armaRepository.CountExpiredByClub(loggedUsuario.ClubeId);
-            var usuariosNoClubeTask = await _usuarioRepository.CountTotalByClub(loggedUsuario.ClubeId);
+            var usuariosNoClubeTask = await _usuarioRepository.CountTotalByClube(loggedUsuario.ClubeId);
             var totalArmasTask = await _armaRepository.CountTotalByClub(loggedUsuario.ClubeId);
 
             return new ResponseAccountantsDashboard

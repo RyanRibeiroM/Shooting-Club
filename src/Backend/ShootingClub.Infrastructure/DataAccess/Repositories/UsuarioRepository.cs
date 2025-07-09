@@ -115,11 +115,26 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<int> CountTotalByClub(int clubeId)
+        public async Task<int> CountTotalByClube(int clubeId)
         {
             return await _dbContext.Usuarios
             .Where(u => u.ClubeId == clubeId)
             .CountAsync();
+        }
+
+        public async Task<bool> CanDelete(Usuario admin, int UsuarioId) => await _dbContext.Usuarios.AnyAsync(usuario => usuario.Id == UsuarioId && usuario.ClubeId == admin.ClubeId);
+
+
+        public async Task Delete(int usuarioId)
+        {
+            var usuario = await _dbContext.Usuarios.FindAsync(usuarioId);
+            if (usuario is null)
+            {
+                return;
+            }
+            var ArmasDoUsuario = _dbContext.Armas.Where(arma => arma.UsuarioId == usuario.Id);
+            _dbContext.RemoveRange(ArmasDoUsuario);
+            _dbContext.Remove(usuario);
         }
     }
 }

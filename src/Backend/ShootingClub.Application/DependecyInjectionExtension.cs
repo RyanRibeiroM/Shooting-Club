@@ -13,6 +13,7 @@ using ShootingClub.Application.UseCases.Dashboard.accountants;
 using ShootingClub.Application.UseCases.Login.DoLogin;
 using ShootingClub.Application.UseCases.Token.RefreshToken;
 using ShootingClub.Application.UseCases.Usuario.ChangeSenha;
+using ShootingClub.Application.UseCases.Usuario.Delete;
 using ShootingClub.Application.UseCases.Usuario.Filter;
 using ShootingClub.Application.UseCases.Usuario.GetById;
 using ShootingClub.Application.UseCases.Usuario.Profile;
@@ -58,6 +59,7 @@ namespace ShootingClub.Application
             services.AddScoped<IGetClubeProfileUseCase, GetClubeProfileUseCase>();
             services.AddScoped<IUserRefreshTokenUseCase, UseRefreshTokenUseCase>();
             services.AddScoped<IGetDashboardUseCase, GetDashboardUseCase>();
+            services.AddScoped<IDeleteUsuarioUseCase, DeleteUsuarioUseCase>();
         }
     }
 }

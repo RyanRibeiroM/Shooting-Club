@@ -4,7 +4,6 @@ using ShootingClub.Domain.Repositories.Arma;
 using ShootingClub.Domain.Services.LoggedUsuario;
 using ShootingClub.Exceptions;
 using ShootingClub.Exceptions.ExceptionsBase;
-using System.Net.Mail;
 
 namespace ShootingClub.Application.UseCases.Arma.Delete
 {

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShootingClub.API.Attributes;
+using ShootingClub.Application.UseCases.Arma.Delete;
 using ShootingClub.Application.UseCases.Arma.GetById;
 using ShootingClub.Application.UseCases.Usuario.ChangeSenha;
+using ShootingClub.Application.UseCases.Usuario.Delete;
 using ShootingClub.Application.UseCases.Usuario.Filter;
 using ShootingClub.Application.UseCases.Usuario.GetById;
 using ShootingClub.Application.UseCases.Usuario.Profile;
@@ -63,7 +65,7 @@ namespace ShootingClub.API.Controllers
         [HttpPost("filter")]
         [ProducesResponseType(typeof(ResponseUsuariosJson), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [AuthenticatedAdmin]
+        [AuthenticatedAdminWithClube]
         public async Task<IActionResult> Filter(
             [FromServices] IFilterUsuarioUseCase useCase,
             [FromBody] RequestFilterUsuarioJson request)
@@ -96,7 +98,7 @@ namespace ShootingClub.API.Controllers
         [Route("{id}")]
         [ProducesResponseType(typeof(ResponseUsuarioJson), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
-        [AuthenticatedAdmin]
+        [AuthenticatedAdminWithClube]
         public async Task<IActionResult> GetById(
             [FromServices] IGetUsuarioByIdUseCase useCase,
             [FromRoute] int id)
@@ -104,6 +106,20 @@ namespace ShootingClub.API.Controllers
             var response = await useCase.Execute(id);
 
             return Ok(response);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+        [AuthenticatedAdminWithClube]
+        public async Task<IActionResult> Delete(
+            [FromServices] IDeleteUsuarioUseCase useCase,
+            [FromRoute] int id)
+        {
+            await useCase.Execute(id);
+
+            return NoContent();
         }
 
     }
