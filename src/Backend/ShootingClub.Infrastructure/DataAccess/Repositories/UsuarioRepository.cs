@@ -119,10 +119,17 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
         {
             return await _dbContext.Usuarios
             .Where(u => u.ClubeId == clubeId)
-            .CountAsync();
+            .CountAsync() - 1;
         }
 
-        public async Task<bool> CanDelete(Usuario admin, int UsuarioId) => await _dbContext.Usuarios.AnyAsync(usuario => usuario.Id == UsuarioId && usuario.ClubeId == admin.ClubeId);
+        public async Task<int> CountUsuariosRegisteredInTheLastYear(Usuario admin)
+        {
+            var lastYear = DateTime.UtcNow.AddYears(-1);
+
+            return await _dbContext.Usuarios.Where(u => u.ClubeId == admin.ClubeId && u.CriadoEm >= lastYear && u.Id != admin.Id).CountAsync();
+        }
+
+        public async Task<bool> CanDelete(Usuario admin, int UsuarioId) => await _dbContext.Usuarios.AnyAsync(usuario => usuario.Id == UsuarioId && usuario.ClubeId == admin.ClubeId && usuario.Id == admin.Id);
 
 
         public async Task Delete(int usuarioId)

@@ -190,5 +190,23 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
                 )
                 .CountAsync();
         }
+
+        public async Task<int> CountArmasRegisteredInTheLastYear(int clubeId)
+        {
+            var userIdsDoClube = await _dbContext.Usuarios
+            .Where(u => u.ClubeId == clubeId)
+            .Select(u => u.Id)
+            .ToListAsync();
+
+            var lastYear = DateTime.UtcNow.AddYears(-1);
+
+            return await _dbContext.Armas
+                .Where(a =>
+                    ((a.UsuarioId == 0 && a.ClubeId == clubeId) ||
+                    (a.UsuarioId != 0 && userIdsDoClube.Contains(a.UsuarioId)))
+                    && a.CriadoEm >= lastYear
+                )
+                .CountAsync();
+        }
     }
 }

@@ -26,15 +26,19 @@ namespace ShootingClub.Application.UseCases.Dashboard.accountants
         {
             var loggedUsuario = await _loggedUsuario.Usuario();
 
-            var armasAtrasadasTask = await _armaRepository.CountExpiredByClub(loggedUsuario.ClubeId);
-            var usuariosNoClubeTask = await _usuarioRepository.CountTotalByClube(loggedUsuario.ClubeId);
-            var totalArmasTask = await _armaRepository.CountTotalByClub(loggedUsuario.ClubeId);
+            var armasAtrasadas = await _armaRepository.CountExpiredByClub(loggedUsuario.ClubeId);
+            var usuariosNoClube = await _usuarioRepository.CountTotalByClube(loggedUsuario.ClubeId);
+            var ultimosUsuariosCadastrados = await _usuarioRepository.CountUsuariosRegisteredInTheLastYear(loggedUsuario);
+            var totalArmas = await _armaRepository.CountTotalByClub(loggedUsuario.ClubeId);
+            var ultimasArmasCadastradas = await _armaRepository.CountArmasRegisteredInTheLastYear(loggedUsuario.ClubeId);
 
             return new ResponseAccountantsDashboard
             {
-                QuantArmasAtrasadas = armasAtrasadasTask,
-                QuantUsuariosNoClube = usuariosNoClubeTask,
-                QuantTotalArmas = totalArmasTask
+                QuantArmasAtrasadas = armasAtrasadas,
+                QuantUsuariosNoClube = usuariosNoClube,
+                QuantTotalArmas = totalArmas,
+                QuantidadeArmasCadastradasUltimoAno = ultimasArmasCadastradas,
+                QuantidadeUsuariosCadastradosUltimoAno = ultimosUsuariosCadastrados
             };
         }
     }
