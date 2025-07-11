@@ -13,9 +13,9 @@
         public string EnderecoBairro { get; set; } = string.Empty;
         public string EnderecoRua { get; set; } = string.Empty;
         public string EnderecoNumero { get; set; } = string.Empty;
-        public string CR { get; set; } = string.Empty;
-        public DateOnly DataVencimentoCR { get; set; }
-        public string SFPCVinculacao { get; set; } = string.Empty;
+        public string? CR { get; set; }
+        public DateOnly? DataVencimentoCR { get; set; }
+        public string? SFPCVinculacao { get; set; }
         public string NumeroFiliacao { get; set; } = string.Empty;
         public DateOnly DataFiliacao { get; set; }
         public DateOnly DataRenovacaoFiliacao { get; set; }

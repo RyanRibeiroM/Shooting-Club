@@ -84,11 +84,8 @@ namespace ShootingClub.Application.UseCases.Usuario
                 .LessThanOrEqualTo(_ => DateOnly.FromDateTime(DateTime.Today))
                 .WithMessage(ResourceMessagesException.DATA_FILIACAO_INVALIDA);
 
-
-
             RuleFor(usuario => usuario.DataRenovacaoFiliacao)
                 .NotEmpty()
-                .LessThanOrEqualTo(_ => DateOnly.FromDateTime(DateTime.Today))
                 .Must((usuario, dataRenovacao) => dataRenovacao >= usuario.DataFiliacao)
                 .WithMessage(ResourceMessagesException.DATA_RENOVACAO_FILIACAO_INVALIDA);
 
@@ -114,7 +111,8 @@ namespace ShootingClub.Application.UseCases.Usuario
                     .WithMessage(ResourceMessagesException.DATA_VENCIMENTO_CR_SEM_CR);
 
                 RuleFor(usuario => usuario.SFPCVinculacao)
-                    .Empty().WithMessage(ResourceMessagesException.SFPC_VINCULACAO_SEM_CR);
+                    .Empty()
+                    .WithMessage(ResourceMessagesException.SFPC_VINCULACAO_SEM_CR);
             });
         }
     }

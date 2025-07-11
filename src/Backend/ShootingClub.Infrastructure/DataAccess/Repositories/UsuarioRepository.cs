@@ -31,7 +31,7 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
 
         public async Task<bool> ExistActiveUsuarioWithCR(string cr)
         {
-            return await _dbContext.Usuarios.AnyAsync(usuario => usuario.CR.Equals(cr) && usuario.Ativo);
+            return await _dbContext.Usuarios.AnyAsync(usuario => !string.IsNullOrEmpty(usuario.CR) && usuario.CR.Equals(cr) && usuario.Ativo);
         }
 
         public async Task<bool> ExistActiveUsuarioWithNumeroFiliacao(string numeroFiliacao)
@@ -109,7 +109,7 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
             {
                 var dataLimite = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(30));
 
-                query = query.Where(u => u.DataVencimentoCR <= dataLimite || u.DataRenovacaoFiliacao <= dataLimite);
+                query = query.Where(u => (u.DataVencimentoCR.HasValue && u.DataVencimentoCR <= dataLimite) || u.DataRenovacaoFiliacao > dataLimite);
             }
 
             return await query.ToListAsync();
@@ -133,6 +133,7 @@ namespace ShootingClub.Infrastructure.DataAccess.Repositories
                 return;
             }
             var ArmasDoUsuario = _dbContext.Armas.Where(arma => arma.UsuarioId == usuario.Id);
+
             _dbContext.RemoveRange(ArmasDoUsuario);
             _dbContext.Remove(usuario);
         }
