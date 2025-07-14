@@ -2,7 +2,6 @@
 using ShootingClub.Communication.Requests;
 using ShootingClub.Domain.Repositories;
 using ShootingClub.Domain.Repositories.Clube;
-using ShootingClub.Domain.Repositories.Usuario;
 using ShootingClub.Domain.Services.LoggedUsuario;
 using ShootingClub.Exceptions;
 using ShootingClub.Exceptions.ExceptionsBase;

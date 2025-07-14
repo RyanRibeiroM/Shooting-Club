@@ -16,7 +16,6 @@ namespace ShootingClub.Application.UseCases.Arma.Update
     public class UpdateArmaUseCase : IUpdateArmaUseCase
     {
         private readonly IArmaUpdateOnlyRepository _updateOnlyRepository;
-        private readonly IArmaReadOnlyRepository _armaReadOnlyRepository;
         private readonly IUsuarioReadOnlyRepository _usuarioRepository;
         private readonly ILoggedUsuario _loggedUsuario;
         private readonly IUnitOfWork _unitOfWork;
@@ -31,7 +30,6 @@ namespace ShootingClub.Application.UseCases.Arma.Update
             IMapper mapper)
         {
             _updateOnlyRepository = updateOnlyRepository;
-            _armaReadOnlyRepository = armaReadOnlyRepository;
             _loggedUsuario = loggedUsuario;
             _unitOfWork = unitOfWork;
             _mapper = mapper;

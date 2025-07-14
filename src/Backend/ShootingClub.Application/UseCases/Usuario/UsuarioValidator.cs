@@ -1,11 +1,8 @@
 ﻿using FluentValidation;
-using FluentValidation.Validators;
 using ShootingClub.Application.SharedValidators;
 using ShootingClub.Application.Utils;
 using ShootingClub.Communication.Requests;
 using ShootingClub.Exceptions;
-using System.Data;
-using System.Text.RegularExpressions;
 
 namespace ShootingClub.Application.UseCases.Usuario
 {
@@ -14,7 +11,6 @@ namespace ShootingClub.Application.UseCases.Usuario
         private const string TextOnlyRegex = @"^[a-zA-Z\u00C0-\u017F\s'-]+$";
         private const string TextAndNumbersRegex = @"^[a-zA-Z0-9\u00C0-\u017F\s'-]+$";
         private const string PositiveIntegerRegex = @"^[1-9][0-9]*$";
-        private const string SfpcRegex = @"^(1[0-2]|[1-9])ª\sRM$";
 
 
         public UsuarioValidator()
@@ -101,7 +97,7 @@ namespace ShootingClub.Application.UseCases.Usuario
 
                 RuleFor(usuario => usuario.SFPCVinculacao)
                     .NotEmpty().WithMessage(ResourceMessagesException.SFPC_VINCULACAO_REQUERIDO)
-                    .Matches(SfpcRegex)
+                    .Matches(TextAndNumbersRegex)
                     .WithMessage(ResourceMessagesException.SFPC_VINCULACAO_INVALIDA);
             })
             .Otherwise(() =>

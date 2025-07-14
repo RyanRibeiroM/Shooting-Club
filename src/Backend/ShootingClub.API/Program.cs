@@ -51,12 +51,15 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+var allowedOriginsSetting = builder.Configuration.GetValue<string>("AllowedOrigins") ?? "";
+var allowedOrigins = allowedOriginsSetting.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: CORSSpecifcOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:5173")
+                          policy.WithOrigins(allowedOrigins)
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });

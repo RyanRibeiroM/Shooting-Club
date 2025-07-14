@@ -3,6 +3,7 @@ using ShootingClub.Communication.Requests;
 using ShootingClub.Communication.Responses;
 using ShootingClub.Domain.Repositories.Arma;
 using ShootingClub.Domain.Services.LoggedUsuario;
+using ShootingClub.Exceptions;
 using ShootingClub.Exceptions.ExceptionsBase;
 
 namespace ShootingClub.Application.UseCases.Arma.Filter
@@ -20,8 +21,9 @@ namespace ShootingClub.Application.UseCases.Arma.Filter
         }
         public async Task<ResponseArmasJson> Execute(RequestFilterArmaJson request)
         {
-            Validate(request);
             var loggedUser = await _loggedUsuario.Usuario();
+            Validate(request, loggedUser);
+
 
             var filters = new Domain.Dtos.FilterArmasDto 
             {
@@ -40,11 +42,14 @@ namespace ShootingClub.Application.UseCases.Arma.Filter
            
         }
 
-        private static void Validate(RequestFilterArmaJson request)
+        private static void Validate(RequestFilterArmaJson request, Domain.Entities.Usuario loggedUser)
         {
             var validator = new FilterArmasValidator();
-
             var result = validator.Validate(request);
+
+            if(loggedUser.ClubeId == 0)
+                result.Errors.Add(new FluentValidation.Results.ValidationFailure(string.Empty, ResourceMessagesException.ARMA_NAO_ENCONTRADA));
+
             if (!result.IsValid)
             {
                 var errorMessages = result.Errors.Select(error => error.ErrorMessage).ToList();
