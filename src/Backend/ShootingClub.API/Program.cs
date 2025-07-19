@@ -75,7 +75,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
-
+app.UseCors(CORSSpecifcOrigins);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
