@@ -1,7 +1,7 @@
 import { apiFetch } from "../Api/Api";
 
 export function cadastrarUsuario(dadosUsuario) {
-  return apiFetch("/usuario", {
+  return apiFetch("/api/usuario", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -11,7 +11,7 @@ export function cadastrarUsuario(dadosUsuario) {
 }
 
 export function filtrarUsuarios(filtro) {
-  return apiFetch("/usuario/filter", {
+  return apiFetch("/api/usuario/filter", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -21,19 +21,19 @@ export function filtrarUsuarios(filtro) {
 }
 
 export function getUsuarioProfile() {
-  return apiFetch("/usuario", {
+  return apiFetch("/api/usuario", {
     method: "GET",
   });
 }
 
 export function getUsuarioById(id) {
-  return apiFetch(`/usuario/${id}`, {
+  return apiFetch(`/api/usuario/${id}`, {
     method: "GET",
   });
 }
 
 export function atualizarUsuario(usuario) {
-  return apiFetch(`/usuario/${usuario.id}`, {
+  return apiFetch(`/api/usuario/${usuario.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -43,13 +43,13 @@ export function atualizarUsuario(usuario) {
 }
 
 export function deletarUsuario(id) {
-  return apiFetch(`/usuario/${id}`, {
+  return apiFetch(`/api/usuario/${id}`, {
     method: "DELETE",
   });
 }
 
 export function atualizarUsuarioProfile(dadosAtualizados) {
-  return apiFetch("/usuario", {
+  return apiFetch("/api/usuario", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export function atualizarUsuarioProfile(dadosAtualizados) {
 }
 
 export function changeSenha(dados) {
-  return apiFetch("/usuario/change-password", {
+  return apiFetch("/api/usuario/change-password", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

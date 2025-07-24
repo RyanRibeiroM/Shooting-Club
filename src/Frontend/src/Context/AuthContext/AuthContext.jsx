@@ -1,44 +1,55 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
+import { login as loginService } from "../../Services/AuthService/AuthService";
 
-export const AuthContext = createContext(); 
+export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
-  const [refreshToken, setRefreshToken] = useState(localStorage.getItem("refreshToken") || null);
-  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (token) {
-      localStorage.setItem("token", token);
-    } else {
-      localStorage.removeItem("token");
-      setUser(null);
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+      setIsAuthenticated(true);
     }
-  }, [token]);
+    setIsLoading(false);
+  }, []);
 
-  useEffect(() => {
-    if (refreshToken) {
+  const login = async (email, password) => {
+    try {
+      const response = await loginService(email, password);
+      const { accessToken, refreshToken } = response.tokens;
+
+      localStorage.setItem("token", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-    } else {
-      localStorage.removeItem("refreshToken");
-    }
-  }, [refreshToken]);
+      setToken(accessToken);
+      setIsAuthenticated(true);
 
-  const login = (newToken, newRefreshToken, rememberMe) => {
-    setToken(newToken);
-    if (rememberMe) {
-      setRefreshToken(newRefreshToken);
+      return response;
+    } catch (error) {
+      logout();
+      throw error;
     }
   };
 
   const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
     setToken(null);
-    setRefreshToken(null);
+    setIsAuthenticated(false);
   };
 
-  return (
-    <AuthContext.Provider value={{ token, refreshToken, user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const value = { isAuthenticated, token, isLoading, login, logout };
+
+  if (isLoading) {
+    return <div>Carregando...</div>;
+  }
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export function useAuth() {
+  return useContext(AuthContext);
 }

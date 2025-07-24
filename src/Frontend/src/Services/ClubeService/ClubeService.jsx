@@ -1,7 +1,7 @@
 import { apiFetch } from "../Api/Api";
 
 export function cadastrarClube(dadosClube) {
-  return apiFetch("/clube", {
+  return apiFetch("/api/clube", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -11,13 +11,13 @@ export function cadastrarClube(dadosClube) {
 }
 
 export function getClube() {
-  return apiFetch("/clube", {
+  return apiFetch("/api/clube", {
     method: "GET",
   });
 }
 
 export function editarClube(dadosClube) {
-  return apiFetch("/clube", {
+  return apiFetch("/api/clube", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

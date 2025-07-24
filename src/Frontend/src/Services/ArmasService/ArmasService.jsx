@@ -1,7 +1,7 @@
 import { apiFetch } from "../Api/Api";
 
 export function cadastrarArmas(dadosArmas) {
-  return apiFetch("/arma", {
+  return apiFetch("/api/arma", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -11,7 +11,7 @@ export function cadastrarArmas(dadosArmas) {
 }
 
 export function editarArma(id, dadosArma) {
-  return apiFetch(`/arma/${id}`, {
+  return apiFetch(`/api/arma/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export function editarArma(id, dadosArma) {
 }
 
 export function filtrarArmas(filtros) {
-  return apiFetch("/arma/filter", {
+  return apiFetch("/api/arma/filter", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export function deletarArma(id) {
 }
 
 export function buscarArmaPorId(id) {
-  return apiFetch(`/arma/${id}`, {
+  return apiFetch(`/api/arma/${id}`, {
     method: "GET",
   });
 }
