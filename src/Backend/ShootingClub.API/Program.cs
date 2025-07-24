@@ -51,15 +51,12 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-var allowedOriginsSetting = builder.Configuration.GetValue<string>("AllowedOrigins") ?? "";
-var allowedOrigins = allowedOriginsSetting.Split(',', StringSplitOptions.RemoveEmptyEntries);
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: CORSSpecifcOrigins,
                       policy =>
                       {
-                          policy.WithOrigins(allowedOrigins)
+                          policy.WithOrigins()
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
@@ -74,7 +71,9 @@ builder.Services.AddScoped<ITokenProvider, HttpContextTokenValue>();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHealthChecks();
 var app = builder.Build();
+app.MapHealthChecks("/health");
 app.UseCors(CORSSpecifcOrigins);
 
 // Configure the HTTP request pipeline.

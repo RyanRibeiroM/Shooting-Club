@@ -1,0 +1,8 @@
+# Define o comportamento padrão para todos os arquivos de texto
+* text=auto eol=lf
+
+# Garante que arquivos de script do Windows tenham a quebra de linha correta (opcional)
+*.{cmd,bat} text eol=crlf
+
+# Garante que scripts de shell tenham a quebra de linha correta
+*.sh text eol=lf
